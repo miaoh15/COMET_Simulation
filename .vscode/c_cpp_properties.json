@@ -1,0 +1,18 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/home/miaomiao/software/geant4/geant4-install/include/Geant4/**",
+                "/home/miaomiao/geant4-results/COMET-alpha/include/**"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c11",
+            "cppStandard": "gnu++11",
+            "intelliSenseMode": "clang-x64"
+        }
+    ],
+    "version": 4
+}
