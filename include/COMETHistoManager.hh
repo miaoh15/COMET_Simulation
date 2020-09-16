@@ -1,5 +1,6 @@
 #ifndef COMETHistoManager_h
-#define cOMETHistoManager_h 1
+#define COMETHistoManager_h 1
+#endif
 
 #include "globals.hh"
 
@@ -7,9 +8,21 @@
 
 class TFile;
 class TTree;
-class TH1D;
+class TVector3;
 
-class HistoManager{
+class COMETHistoManager{
     public:
-    
-}
+    COMETHistoManager();
+   ~COMETHistoManager();
+
+    void Book();
+    void Save();
+
+    void FillNtuple(G4int pdg, TVector3* momentum);
+
+  private:
+    TFile*   fRootFile;
+    TTree*   fNtuple;
+    G4int fPdg;
+    TVector3* fMomentum;
+};

@@ -3,6 +3,7 @@
 
 #include "COMETDetectorConstruction.hh"
 #include "COMETActionInitialization.hh"
+#include "QGSP_BERT_HP.hh"
 
 #ifdef G4MULTITHREADED
 #include "G4MTRunManager.hh"

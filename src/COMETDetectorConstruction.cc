@@ -16,8 +16,9 @@ static const double     Pi  = 3.14159265358979323846;
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 COMETDetectorConstruction::COMETDetectorConstruction()
-: G4VUserDetectorConstruction(),
-{ }
+: G4VUserDetectorConstruction()
+{ 
+}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -45,7 +46,7 @@ G4VPhysicalVolume* COMETDetectorConstruction::Construct()
   G4double density; 
 
   // Vacuum
-  G4Material* Galactic = new G4Material("Galactic", z=1., a=1.01*g/mole,density= universe_mean_density,
+  G4Material* Galactic = new G4Material("Galactic", z=1., a=1.01*g/mole,density= CLHEP::universe_mean_density,
                   kStateGas, 2.73*kelvin, 3.e-18*pascal);
 
   //     

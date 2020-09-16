@@ -5,7 +5,8 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "/home/miaomiao/software/geant4/geant4-install/include/Geant4/**",
-                "/home/miaomiao/geant4-results/COMET-alpha/include/**"
+                "/home/miaomiao/geant4-results/COMET-alpha/include/**",
+                "/home/miaomiao/software/root6/root-build/include/**"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",

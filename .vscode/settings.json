@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "*.icc": "cpp",
+        "h1": "cpp",
+        "h2": "cpp",
+        "h3": "cpp"
+    }
+}

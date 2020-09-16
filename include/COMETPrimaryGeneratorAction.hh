@@ -7,11 +7,9 @@
 #include "G4VUserPrimaryGeneratorAction.hh"
 #include "G4ParticleGun.hh"
 #include "globals.hh"
-#include "TH1D.h"
 
 class G4ParticleGun;
 class G4Event;
-class G4Box;
 
 /// The primary generator action class with particle gun.
 ///
@@ -32,8 +30,6 @@ class COMETPrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
   
   private:
     G4ParticleGun*  fParticleGun; // pointer a to G4 gun class
-    G4Box* fEnvelopeBox;
-    TH1D* a;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

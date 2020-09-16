@@ -11,13 +11,15 @@ class COMETEventAction;
 
 class G4LogicalVolume;
 
+class COMETHistoManager;
+
 /// Stepping action class
 /// 
 
 class COMETSteppingAction : public G4UserSteppingAction
 {
   public:
-    COMETSteppingAction(COMETEventAction* eventAction);
+    COMETSteppingAction(COMETEventAction* eventAction, COMETHistoManager*);
     virtual ~COMETSteppingAction();
 
     // method from the base class
@@ -25,7 +27,7 @@ class COMETSteppingAction : public G4UserSteppingAction
 
   private:
     COMETEventAction*  fEventAction;
-    G4LogicalVolume* fScoringVolume;
+    COMETHistoManager* fHistoManager;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
