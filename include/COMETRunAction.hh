@@ -34,6 +34,8 @@
 #include "G4Accumulable.hh"
 #include "globals.hh"
 
+#include "TFile.h"
+
 class G4Run;
 
 /// Run action class

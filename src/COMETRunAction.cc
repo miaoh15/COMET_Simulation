@@ -4,6 +4,7 @@
 #include "COMETRunAction.hh"
 #include "COMETPrimaryGeneratorAction.hh"
 #include "COMETDetectorConstruction.hh"
+#include "COMETAnalysis.hh"
 // #include "COMETRun.hh"
 
 #include "G4RunManager.hh"
@@ -21,6 +22,12 @@ COMETRunAction::COMETRunAction()
   fEdep(0.),
   fEdep2(0.)
 { 
+  // Create analysis manager
+  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+  G4cout<<"Using "<<analysismanager->GetType()<<G4endl;
+  analysisManager->SetVerboseLevel(1);
+  analysisManager->SetFirstHistoId(1):
+  
   // add new units for dose
   // 
   const G4double milligray = 1.e-3*gray;
