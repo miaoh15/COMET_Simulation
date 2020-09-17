@@ -10,7 +10,9 @@ COMETHistoManager::COMETHistoManager()
 :fRootFile(0), 
  fNtuple(0),
  fPdg(0),
- fMomentum(NULL)
+ fMomentumX(0.),
+ fMomentumY(0.),
+ fMomentumZ(0.)
  {
  }
 
@@ -35,8 +37,10 @@ void COMETHistoManager::Book()
 
   // create 1st ntuple
   fNtuple = new TTree("Ntuple", "release");
-  fNtuple->Branch("Pdg", &fPdg, "Pdg");
-  fNtuple->Branch("Momentum", &fMomentum, "Momentum");
+  fNtuple->Branch("Pdg", &fPdg, "Pdg/I");
+  fNtuple->Branch("MomentumX", &fMomentumX, "MomentumX/D");
+  fNtuple->Branch("MomentumY", &fMomentumY, "MomentumY/D");
+  fNtuple->Branch("MomentumZ", &fMomentumZ, "MomentumZ/D");
  
   G4cout << "\n----> Output file is open in " << fileName << G4endl;
 }
@@ -51,10 +55,14 @@ void COMETHistoManager::Save()
   G4cout << "\n----> Histograms and ntuples are saved\n" << G4endl;
 }
 
-void COMETHistoManager::FillNtuple(G4int pdg, TVector3* momentum)
+void COMETHistoManager::FillNtuple(G4int pdg, G4double momentumX, G4double momentumY, G4double momentumZ)
 {
   fPdg = pdg;
-  fMomentum = momentum;
+  fMomentumX = momentumX;
+  fMomentumY = momentumY;
+  fMomentumZ = momentumZ;
+  //G4cout<<"PDG: "<<fPdg<<G4endl;
 
-  if (fNtuple) fNtuple->Fill();
+  //G4cout << "Filling ... " << G4endl;
+  fNtuple->Fill();
 }

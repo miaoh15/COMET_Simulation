@@ -18,11 +18,13 @@ class COMETHistoManager{
     void Book();
     void Save();
 
-    void FillNtuple(G4int pdg, TVector3* momentum);
+    void FillNtuple(G4int pdg, G4double momentumX, G4double momentumY, G4double momentumZ);
 
   private:
     TFile*   fRootFile;
     TTree*   fNtuple;
-    G4int fPdg;
-    TVector3* fMomentum;
+    int fPdg;
+    double fMomentumX;
+    double fMomentumY;
+    double fMomentumZ;
 };

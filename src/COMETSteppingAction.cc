@@ -32,21 +32,28 @@ COMETSteppingAction::~COMETSteppingAction()
 
 void COMETSteppingAction::UserSteppingAction(const G4Step* step)
 {
-    const COMETDetectorConstruction* detectorConstruction
+    /*const COMETDetectorConstruction* detectorConstruction
       = static_cast<const COMETDetectorConstruction*>
-        (G4RunManager::GetRunManager()->GetUserDetectorConstruction());
+        (G4RunManager::GetRunManager()->GetUserDetectorConstruction());*/
   
   G4int pdg=0;
-  TVector3* momentum=NULL;
+  G4double momentumX = 0.;
+  G4double momentumY = 0.;
+  G4double momentumZ = 0.;
+
+  //G4cout<<"The volume name: "<<step->GetPreStepPoint()->GetTouchableHandle()->GetVolume()->GetLogicalVolume()->GetName()<<G4endl;
 
   if(step->GetPreStepPoint()->GetTouchableHandle()->GetVolume()->GetLogicalVolume()->GetName()=="target"
-  &&step->GetPostStepPoint()->GetTouchableHandle()->GetVolume()->GetLogicalVolume()->GetName()=="world"){
+  &&step->GetPostStepPoint()->GetTouchableHandle()->GetVolume()->GetLogicalVolume()->GetName()=="World"){
+    //G4cout<<"Bingo!"<<G4endl;
     G4Track* track = step->GetTrack();
     pdg = track->GetParticleDefinition()->GetPDGEncoding();
-    momentum->SetX((track->GetMomentum()).getX());
-    momentum->SetY((track->GetMomentum()).getY());
-    momentum->SetZ((track->GetMomentum()).getZ());
-    fHistoManager->FillNtuple(pdg, momentum);
+    //G4cout<<"The pdg: "<<track->GetParticleDefinition()->GetPDGEncoding()<<G4endl;
+    //G4cout<<"The X momentum: "<<(track->GetMomentum()).getX()<<G4endl;
+    momentumX = (track->GetMomentum()).getX();
+    momentumY = (track->GetMomentum()).getY();
+    momentumZ = (track->GetMomentum()).getZ();
+    fHistoManager->FillNtuple(pdg, momentumX, momentumY, momentumZ);
   }
 }
 
