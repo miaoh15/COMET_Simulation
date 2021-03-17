@@ -4,9 +4,16 @@
 #ifndef COMETRunAction_h
 #define COMETRunAction_h 1
 
+#include "COMETProcessManager.hh"
+
 #include "G4UserRunAction.hh"
 #include "G4Accumulable.hh"
 #include "globals.hh"
+
+#include <vector>
+#include <string>
+
+using namespace std;
 
 class G4Run;
 class COMETHistoManager;
@@ -20,7 +27,7 @@ class COMETHistoManager;
 class COMETRunAction : public G4UserRunAction
 {
   public:
-    COMETRunAction(COMETHistoManager*);
+    COMETRunAction();
     virtual ~COMETRunAction();
 
     // virtual G4Run* GenerateRun();
@@ -28,7 +35,8 @@ class COMETRunAction : public G4UserRunAction
     virtual void   EndOfRunAction(const G4Run*);
 
   private:
-  COMETHistoManager* fHistoManager;
+    COMETHistoManager* fHistoManager;
+    COMETProcessManager* fProcessManager;
 };
 
 #endif

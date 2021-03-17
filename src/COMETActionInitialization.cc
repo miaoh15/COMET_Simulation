@@ -7,6 +7,7 @@
 #include "COMETEventAction.hh"
 #include "COMETSteppingAction.hh"
 #include "COMETHistoManager.hh"
+#include "COMETTrackingAction.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -22,28 +23,26 @@ COMETActionInitialization::~COMETActionInitialization()
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void COMETActionInitialization::BuildForMaster() const
-{
-  COMETHistoManager* histo = new COMETHistoManager();
-  
-  COMETRunAction* runAction = new COMETRunAction(histo);
+{ 
+  COMETRunAction* runAction = new COMETRunAction();
   SetUserAction(runAction);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void COMETActionInitialization::Build() const
-{
-  COMETHistoManager* histo = new COMETHistoManager();
-  
+{ 
   SetUserAction(new COMETPrimaryGeneratorAction);
 
-  COMETRunAction* runAction = new COMETRunAction(histo);
+  COMETRunAction* runAction = new COMETRunAction();
   SetUserAction(runAction);
   
   COMETEventAction* eventAction = new COMETEventAction(runAction);
   SetUserAction(eventAction);
   
-  SetUserAction(new COMETSteppingAction(eventAction,histo));
+  SetUserAction(new COMETSteppingAction(eventAction));
+
+  SetUserAction(new COMETTrackingAction(runAction));
 }  
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

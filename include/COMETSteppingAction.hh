@@ -19,7 +19,7 @@ class COMETHistoManager;
 class COMETSteppingAction : public G4UserSteppingAction
 {
   public:
-    COMETSteppingAction(COMETEventAction* eventAction, COMETHistoManager*);
+    COMETSteppingAction(COMETEventAction* eventAction);
     virtual ~COMETSteppingAction();
 
     // method from the base class

@@ -36,6 +36,8 @@ G4VPhysicalVolume* COMETDetectorConstruction::Construct()
   //
   G4double target_length = 70*cm, target_radius = 13*mm;
   G4Material* target_material = nist->FindOrBuildMaterial("G4_GRAPHITE");
+
+  G4cout<<"Target Density: "<<target_material->GetDensity()/(g/cm3)<<G4endl;
    
   // Option to switch on/off checking of volumes overlaps
   //

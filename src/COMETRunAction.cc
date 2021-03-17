@@ -17,30 +17,57 @@
 
 #include "COMETHistoManager.hh"
 
+using namespace std;
+
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-COMETRunAction::COMETRunAction(COMETHistoManager* histo)
-: G4UserRunAction(),
-  fHistoManager(histo)
-{}
+COMETRunAction::COMETRunAction()
+: G4UserRunAction()
+  {
+    G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+
+    analysisManager->CreateNtuple("COMET","event");
+    analysisManager->CreateNtupleDColumn("Px");
+    analysisManager->CreateNtupleDColumn("Py");
+    analysisManager->CreateNtupleDColumn("Pz");
+    analysisManager->CreateNtupleDColumn("Posx");
+    analysisManager->CreateNtupleDColumn("Posy");
+    analysisManager->CreateNtupleDColumn("Posz");
+    analysisManager->CreateNtupleDColumn("P");
+    analysisManager->FinishNtuple();
+
+    fProcessManager = COMETProcessManager::GetProcessManager();
+  }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 COMETRunAction::~COMETRunAction()
-{}
+{
+  delete G4AnalysisManager::Instance();
+}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void COMETRunAction::BeginOfRunAction(const G4Run* aRun)
 { 
 G4cout << "### Run " << aRun->GetRunID() << " start." << G4endl;
-fHistoManager->Book();
+
+fProcessManager->BeginOfRunAction();
+
+G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+G4String fileName = "COMET_data";
+analysisManager->OpenFile(fileName);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void COMETRunAction::EndOfRunAction(const G4Run*)
 {
-  fHistoManager->Save();   
+
+  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+  analysisManager->Write();
+  analysisManager->CloseFile();
+
+  fProcessManager->EndOfRunAction();
 }
 

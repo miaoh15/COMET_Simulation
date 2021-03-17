@@ -4,6 +4,9 @@
 #ifndef COMETEventAction_h
 #define COMETEventAction_h 1
 
+#include "COMETHistoManager.hh"
+#include "COMETProcessManager.hh"
+
 #include "G4UserEventAction.hh"
 #include "globals.hh"
 
@@ -23,6 +26,8 @@ class COMETEventAction : public G4UserEventAction
 
   private:
     COMETRunAction* fRunAction;
+    COMETHistoManager* fHistoManager;
+    COMETProcessManager* fProcessManager;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

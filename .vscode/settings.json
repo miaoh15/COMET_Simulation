@@ -3,6 +3,9 @@
         "*.icc": "cpp",
         "h1": "cpp",
         "h2": "cpp",
-        "h3": "cpp"
+        "h3": "cpp",
+        "SeeData.C": "cpp",
+        "ComputeCrossSection.C": "cpp",
+        "iosfwd": "cpp"
     }
 }

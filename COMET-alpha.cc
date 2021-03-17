@@ -3,6 +3,8 @@
 
 #include "COMETDetectorConstruction.hh"
 #include "COMETActionInitialization.hh"
+#include "COMETAntiprotonProduction.hh"
+#include "COMETPhysicsConstructor.hh"
 #include "QGSP_BERT_HP.hh"
 
 #ifdef G4MULTITHREADED
@@ -25,6 +27,7 @@ int main(int argc,char** argv)
 {
   // Detect interactive mode (if no arguments) and define UI session
   //
+  G4double t = clock();
   G4UIExecutive* ui = 0;
   if ( argc == 1 ) {
     ui = new G4UIExecutive(argc, argv);
@@ -48,7 +51,9 @@ int main(int argc,char** argv)
 
   // Physics list
   G4VModularPhysicsList* physicsList = new QGSP_BERT_HP;
-  physicsList->SetVerboseLevel(1);
+  COMETPhysicsConstructor* fConstructor = new COMETPhysicsConstructor();
+  physicsList->RegisterPhysics(fConstructor);
+  //physicsList->SetVerboseLevel(0);
   runManager->SetUserInitialization(physicsList);
     
   // User action initialization
@@ -86,6 +91,7 @@ int main(int argc,char** argv)
   
   delete visManager;
   delete runManager;
+  G4cout<<"Total time: "<<(clock()-t)/CLOCKS_PER_SEC<<"s"<<G4endl;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo.....
