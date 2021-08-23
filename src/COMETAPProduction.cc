@@ -26,7 +26,7 @@ COMETAPProduction::COMETAPProduction( const G4String& name, G4ProcessType aType)
 
     random = new TRandom();
 
-    ifstream MDCS("/home/miaomiao/work/COMET-alpha-analysis/data/APPMaxDCS.txt");
+    ifstream MDCS("/media/miaomiao/data/Analysis/COMET-alpha-analysis/data/APPMaxDCS.txt");
     string line;
     vector<string> MaxDCSStore_str;
 
@@ -109,15 +109,17 @@ G4double COMETAPProduction::GetMeanFreePath(const G4Track& track, G4double, G4Fo
 
     fSqrt_S = W_cms.E();
 
-    G4double MicroCrossSection = 1e10*fCHCrossSection->GetMicroCrossSection(fSqrt_S);
+    G4double MicroCrossSection = fCHCrossSection->GetMicroCrossSection(fSqrt_S);
     //G4cout<<"MicroCrossSection: "<<MicroCrossSection<<G4endl;
 
     G4Material* mat = track.GetMaterial();
     G4double NofProton = (mat->GetDensity()/(g/cm3))*Avogadro*(mat->GetZ()/(mat->GetA()/(g/mole)));
+    //std::cout<<"Z: "<<mat->GetZ()<<"A: "<<mat->GetA()<<std::endl;
     G4double MacroCrossSection = NofProton*MicroCrossSection*1e-27;
     //G4cout<<"MacroCrossSection: "<<MacroCrossSection<<G4endl;
 
     G4double MeanFreePath = 10/MacroCrossSection;
+    //G4cout<<"MeanFreePath: "<<MeanFreePath/mm<<G4endl;
 
     return MeanFreePath;
 }

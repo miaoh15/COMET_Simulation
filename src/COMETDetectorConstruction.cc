@@ -35,6 +35,7 @@ G4VPhysicalVolume* COMETDetectorConstruction::Construct()
   // Target parameters
   //
   G4double target_length = 70*cm, target_radius = 13*mm;
+  //G4double target_length = 10*cm, target_radius = 2*cm;
   G4Material* target_material = nist->FindOrBuildMaterial("G4_GRAPHITE");
 
   G4cout<<"Target Density: "<<target_material->GetDensity()/(g/cm3)<<G4endl;

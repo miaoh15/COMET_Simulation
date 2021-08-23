@@ -6,7 +6,7 @@ using namespace std;
 COMETCHCrossSection::COMETCHCrossSection(G4ParticleDefinition* particle)
 {
     if(particle->GetParticleName()=="anti_proton"){
-        ifstream CS("/home/miaomiao/work/COMET-alpha-analysis/data/AntiprotonMicroCrossSection.txt");
+        ifstream CS("/media/miaomiao/data/Analysis/COMET-alpha-analysis/data/AntiprotonMicroCrossSection.txt");
 
         string line;
 

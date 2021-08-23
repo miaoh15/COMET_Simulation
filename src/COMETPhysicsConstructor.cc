@@ -32,8 +32,8 @@ void COMETPhysicsConstructor::ConstructParticle(){
 void COMETPhysicsConstructor::ConstructProcess(){
     G4ParticleDefinition* particle = G4ParticleTable::GetParticleTable()->FindParticle("proton");
     G4ProcessManager* pManager = particle->GetProcessManager();
-    COMETAntiprotonProduction* APP = new COMETAntiprotonProduction();
-    //COMETAPProduction* APP = new COMETAPProduction();
+    //COMETAntiprotonProduction* APP = new COMETAntiprotonProduction();
+    COMETAPProduction* APP = new COMETAPProduction();
     pManager->AddDiscreteProcess(APP);
 }
 
