@@ -14,6 +14,7 @@
 #include "G4LogicalVolume.hh"
 #include "G4UnitsTable.hh"
 #include "G4SystemOfUnits.hh"
+#include "G4RandomTools.hh"
 
 #include "COMETHistoManager.hh"
 
@@ -57,6 +58,8 @@ fProcessManager->BeginOfRunAction();
 G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 G4String fileName = "COMET_data";
 analysisManager->OpenFile(fileName);
+
+G4Random::setTheSeed(clock());
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

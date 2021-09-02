@@ -19,6 +19,12 @@ class COMETDetectorConstruction : public G4VUserDetectorConstruction
     virtual ~COMETDetectorConstruction();
 
     virtual G4VPhysicalVolume* Construct();
+  
+  private:
+
+    virtual void ConstructSDandField();
+
+    G4LogicalVolume* detectorLV;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

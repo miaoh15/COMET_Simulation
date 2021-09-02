@@ -25,9 +25,9 @@ COMETEventAction::~COMETEventAction()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void COMETEventAction::BeginOfEventAction(const G4Event*)
+void COMETEventAction::BeginOfEventAction(const G4Event* event)
 {
-    fProcessManager->BeginOfEventAction();
+    fProcessManager->BeginOfEventAction(event);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

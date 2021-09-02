@@ -21,7 +21,8 @@ void COMETProcessManager::EndOfRunAction(){
     fHistoManager->Close();
 }
 
-void COMETProcessManager::BeginOfEventAction(){
+void COMETProcessManager::BeginOfEventAction(const G4Event* event){
+    if(event->GetEventID()%100000 == 0) G4cout<<"Processing event "<< event->GetEventID() <<"..."<<G4endl;
     fHistoManager->ClearVector();
 }
 
@@ -31,6 +32,11 @@ void COMETProcessManager::EndOfEventAction(){
 
 void COMETProcessManager::PreUserTrackingAction(const G4Track* track){
     fHistoManager->SetValuePre(track);
+}
+
+G4bool COMETProcessManager::ProcessHits(G4Step* step){
+    fHistoManager->SetSDHit(step);
+    return true;
 }
 
 COMETProcessManager* COMETProcessManager::GetProcessManager(){

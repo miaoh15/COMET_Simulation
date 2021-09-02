@@ -29,7 +29,7 @@ COMETPrimaryGeneratorAction::COMETPrimaryGeneratorAction()
     = particleTable->FindParticle(particleName="proton");
   fParticleGun->SetParticleDefinition(particle);
   fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,1.));
-  fParticleGun->SetParticleEnergy(8.*GeV);
+  fParticleGun->SetParticleEnergy(18.2849*GeV);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

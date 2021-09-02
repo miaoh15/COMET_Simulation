@@ -5,6 +5,7 @@
 #include "globals.hh"
 
 #include "G4Track.hh"
+#include "G4Event.hh"
 
 #include <vector>
 #include <string>
@@ -20,8 +21,9 @@ class COMETProcessManager{
     void EndOfRunAction();
     void PreUserTrackingAction(const G4Track* track);
     void PostUserTrackingAction();
-    void BeginOfEventAction();
+    void BeginOfEventAction(const G4Event* event);
     void EndOfEventAction();
+    G4bool ProcessHits(G4Step* step);
 
     private:
     COMETHistoManager* fHistoManager;

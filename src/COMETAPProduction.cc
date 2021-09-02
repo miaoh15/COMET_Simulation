@@ -25,6 +25,7 @@ COMETAPProduction::COMETAPProduction( const G4String& name, G4ProcessType aType)
     FermiMomentum->SetParameters(1,0.24,0.8,2e-2,4.5e-4);
 
     random = new TRandom();
+    random->SetSeed(clock());
 
     ifstream MDCS("/media/miaomiao/data/Analysis/COMET-alpha-analysis/data/APPMaxDCS.txt");
     string line;
@@ -109,7 +110,7 @@ G4double COMETAPProduction::GetMeanFreePath(const G4Track& track, G4double, G4Fo
 
     fSqrt_S = W_cms.E();
 
-    G4double MicroCrossSection = fCHCrossSection->GetMicroCrossSection(fSqrt_S);
+    G4double MicroCrossSection = 1000*fCHCrossSection->GetMicroCrossSection(fSqrt_S);
     //G4cout<<"MicroCrossSection: "<<MicroCrossSection<<G4endl;
 
     G4Material* mat = track.GetMaterial();

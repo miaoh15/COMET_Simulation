@@ -6,6 +6,8 @@
         "h3": "cpp",
         "SeeData.C": "cpp",
         "ComputeCrossSection.C": "cpp",
-        "iosfwd": "cpp"
+        "iosfwd": "cpp",
+        "vec3": "cpp",
+        "vec4": "cpp"
     }
 }

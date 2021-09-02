@@ -1,8 +1,10 @@
 #include "COMETHistoManager.hh"
+#include "COMETDetectorConstruction.hh"
 
 #include "globals.hh"
 #include "G4UnitsTable.hh"
 #include "G4Track.hh"
+#include "G4RunManager.hh"
 
 #include <TFile.h>
 #include <TTree.h>
@@ -27,18 +29,6 @@ void COMETHistoManager::Fill(){
   fTestTree->Fill();
 }
 
-void COMETHistoManager::SetBranch(string name, vector<double>* pVecD){
-  fTestTree->Branch(name.c_str(), pVecD);
-}
-
-void COMETHistoManager::SetBranch(string name, vector<int>* pVecI){
-  fTestTree->Branch(name.c_str(), pVecI);
-}
-
-void COMETHistoManager::SetBranch(string name, vector<string>* pVecS){
-  fTestTree->Branch(name.c_str(), pVecS);
-}
-
 void COMETHistoManager::OpenFile(string name){
   fTestRooFile = new TFile(name.c_str(), "RECREATE");
 }
@@ -52,25 +42,21 @@ void COMETHistoManager::ClearVector(){
   ParentID.clear();
   CreatorProcess.clear();
   Pdg.clear();
-  Px.clear();
-  Py.clear();
-  Pz.clear();
-  Posx.clear();
-  Posy.clear();
-  Posz.clear();
+  P.clear();
+  Pos.clear();
+  detP.clear();
+  detPos.clear();
 }
 
 void COMETHistoManager::SetBranch(){
-    fHistoManager->SetBranch("TrackID", &TrackID);
-    fHistoManager->SetBranch("ParentID", &ParentID);
-    fHistoManager->SetBranch("CreatorProcess", &CreatorProcess);
-    fHistoManager->SetBranch("Pdg", &Pdg);
-    fHistoManager->SetBranch("Px", &Px);
-    fHistoManager->SetBranch("Py", &Py);
-    fHistoManager->SetBranch("Pz", &Pz);
-    fHistoManager->SetBranch("Posx", &Posx);
-    fHistoManager->SetBranch("Posy", &Posy);
-    fHistoManager->SetBranch("Posz", &Posz);
+    fHistoManager->SetBranch("TrackID", TrackID);
+    fHistoManager->SetBranch("ParentID", ParentID);
+    fHistoManager->SetBranch("CreatorProcess", CreatorProcess);
+    fHistoManager->SetBranch("Pdg", Pdg);
+    fHistoManager->SetBranch("P", P);
+    fHistoManager->SetBranch("Pos", Pos);
+    fHistoManager->SetBranch("detP", detP);
+    fHistoManager->SetBranch("detPos", detPos);
 }
 
 void COMETHistoManager::Write(){
@@ -82,6 +68,16 @@ void COMETHistoManager::Close(){
 }
 
 void COMETHistoManager::SetValuePre(const G4Track* track){
+
+  if(track->GetTrackID()==1) return;
+  if(track->GetParticleDefinition()->GetPDGEncoding()!=-2212) return;
+
+  const G4ThreeVector position = track->GetVertexPosition();
+  G4double x = position.x();
+  G4double y = position.y();
+  G4double z = position.z();
+  if(sqrt(x*x+y*y)>20.*mm || TMath::Abs(z)>50.*mm) return;
+
   TrackID.push_back(track->GetTrackID());
   ParentID.push_back(track->GetParentID());
 
@@ -96,15 +92,48 @@ void COMETHistoManager::SetValuePre(const G4Track* track){
   G4double E = kinEnergy/GeV+m;
   G4double R = sqrt(E*E-m*m)/momentumD.getR();
   G4ThreeVector momentum = G4ThreeVector(momentumD.getX()*R, momentumD.getY()*R, momentumD.getZ()*R);
+  if(momentum.mag()==0) return;
 
-  Px.push_back(momentum.getX());
-  Py.push_back(momentum.getY());
-  Pz.push_back(momentum.getZ());
+  P.push_back(FV(momentum.getX(), momentum.getY(), momentum.getZ(), E));
 
-  const G4ThreeVector position = track->GetVertexPosition();
-  Posx.push_back(position.getX());
-  Posy.push_back(position.getY());
-  Posz.push_back(position.getZ());
+  Pos.push_back(FV(position.getX(), position.getY(), position.getZ(), track->GetGlobalTime()/ns));
+}
+
+void COMETHistoManager::SetSDHit(G4Step* step){
+
+  //const COMETDetectorConstruction* detectorConstruction = static_cast<const COMETDetectorConstruction*> (G4RunManager::GetRunManager()->GetUserDetectorConstruction());
+
+  //G4VPhysicalVolume* volume = step->GetPreStepPoint()->GetTouchableHandle()->GetVolume(0);
+
+  G4bool Enter = step->IsFirstStepInVolume();
+
+  G4Track* track = step->GetTrack();
+
+  if(track->GetTrackID()==1) return;
+  if(track->GetParticleDefinition()->GetPDGEncoding()!=-2212) return;
+  const G4ThreeVector position_ver = track->GetVertexPosition();
+  G4double x = position_ver.x();
+  G4double y = position_ver.y();
+  G4double z = position_ver.z();
+  if(sqrt(x*x+y*y)>20.*mm || TMath::Abs(z)>50.*mm) return;
+
+  if(Enter){
+    const G4ThreeVector momentum = track->GetMomentum();
+    if(momentum.mag()==0) return;
+    G4double m = track->GetDefinition()->GetPDGMass()/GeV;
+    const G4double kinEnergy = track->GetKineticEnergy();
+    G4double E = kinEnergy/GeV+m;
+    detP.push_back(FV(momentum.getX(), momentum.getY(), momentum.getZ(), E));
+
+    const G4ThreeVector position = track->GetPosition();
+
+    if(momentum.mag()<0.001) {
+      G4cout<<"Vertex: "<<position_ver.x()<<","<<position_ver.y()<<","<<position_ver.z()<<G4endl;
+      G4cout<<"Mom: "<<momentum.mag()<<G4endl;
+    }
+
+    detPos.push_back(FV(position.getX(), position.getY(), position.getZ(), track->GetGlobalTime()/ns));
+  }
 }
 
 COMETHistoManager* COMETHistoManager::GetHistoManager(){

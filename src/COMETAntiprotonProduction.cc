@@ -25,6 +25,7 @@ COMETAntiprotonProduction::COMETAntiprotonProduction( const G4String& name, G4Pr
     FermiMomentum->SetParameters(1,0.24,0.8,2e-2,4.5e-4);
 
     random = new TRandom();
+    random->SetSeed(clock());
 }
 
 COMETAntiprotonProduction::~COMETAntiprotonProduction(){
