@@ -11,7 +11,7 @@ COMETProcessManager::COMETProcessManager(){
 }
 
 void COMETProcessManager::BeginOfRunAction(){
-    fHistoManager->OpenFile("/media/miaomiao/data/Analysis/COMET-alpha-analysis/results/output.root");
+    fHistoManager->OpenFile("/media/miaomiao/data/Analysis/COMET-alpha-analysis/results/output3.root");
     fHistoManager->CreateTree("event");
     fHistoManager->SetBranch();
 }

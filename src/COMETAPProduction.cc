@@ -27,7 +27,7 @@ COMETAPProduction::COMETAPProduction( const G4String& name, G4ProcessType aType)
     random = new TRandom();
     random->SetSeed(clock());
 
-    ifstream MDCS("/media/miaomiao/data/Analysis/COMET-alpha-analysis/data/APPMaxDCS.txt");
+    ifstream MDCS("/home/miaomiao/work/COMET-alpha/data/APPMaxDCS.txt");
     string line;
     vector<string> MaxDCSStore_str;
 
