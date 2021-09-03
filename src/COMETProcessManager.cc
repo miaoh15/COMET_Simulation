@@ -11,7 +11,7 @@ COMETProcessManager::COMETProcessManager(){
 }
 
 void COMETProcessManager::BeginOfRunAction(){
-    fHistoManager->OpenFile("output.root");
+    fHistoManager->OpenFile("/media/miaomiao/data/Analysis/COMET-alpha-analysis/results/output.root");
     fHistoManager->CreateTree("event");
     fHistoManager->SetBranch();
 }
@@ -22,7 +22,7 @@ void COMETProcessManager::EndOfRunAction(){
 }
 
 void COMETProcessManager::BeginOfEventAction(const G4Event* event){
-    if(event->GetEventID()%100000 == 0) G4cout<<"Processing event "<< event->GetEventID() <<"..."<<G4endl;
+    if(event->GetEventID()%1000000 == 0) G4cout<<"Processing event "<< event->GetEventID() <<"..."<<G4endl;
     fHistoManager->ClearVector();
 }
 

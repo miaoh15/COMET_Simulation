@@ -30,6 +30,11 @@ COMETPrimaryGeneratorAction::COMETPrimaryGeneratorAction()
   fParticleGun->SetParticleDefinition(particle);
   fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,1.));
   fParticleGun->SetParticleEnergy(18.2849*GeV);
+
+  random = new TRandom();
+  random->SetSeed(clock());
+  
+  rho = new TF1("rho", "x", 0, deviation);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -43,7 +48,12 @@ COMETPrimaryGeneratorAction::~COMETPrimaryGeneratorAction()
 
 void COMETPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 {
-  fParticleGun->SetParticlePosition(G4ThreeVector(0.,0.,-1.*m));
+  G4double R = rho->GetRandom(0., deviation);
+
+  G4double x,y;
+  random->Circle(x,y,R);
+
+  fParticleGun->SetParticlePosition(G4ThreeVector(x,y,-1.*m));
 
   fParticleGun->GeneratePrimaryVertex(anEvent);
 }

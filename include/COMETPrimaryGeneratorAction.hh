@@ -8,6 +8,11 @@
 #include "G4ParticleGun.hh"
 #include "globals.hh"
 
+#include "TRandom.h"
+#include "TF1.h"
+
+using namespace CLHEP;
+
 class G4ParticleGun;
 class G4Event;
 
@@ -30,6 +35,11 @@ class COMETPrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
   
   private:
     G4ParticleGun*  fParticleGun; // pointer a to G4 gun class
+
+    G4double deviation = 2.5*mm;
+
+    TRandom* random;
+    TF1* rho;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

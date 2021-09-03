@@ -96,7 +96,7 @@ void COMETHistoManager::SetValuePre(const G4Track* track){
 
   P.push_back(FV(momentum.getX(), momentum.getY(), momentum.getZ(), E));
 
-  Pos.push_back(FV(position.getX(), position.getY(), position.getZ(), track->GetGlobalTime()/ns));
+  Pos.push_back(FV(position.getX(), position.getY(), position.getZ(), track->GetGlobalTime()));
 }
 
 void COMETHistoManager::SetSDHit(G4Step* step){
@@ -123,7 +123,7 @@ void COMETHistoManager::SetSDHit(G4Step* step){
     G4double m = track->GetDefinition()->GetPDGMass()/GeV;
     const G4double kinEnergy = track->GetKineticEnergy();
     G4double E = kinEnergy/GeV+m;
-    detP.push_back(FV(momentum.getX(), momentum.getY(), momentum.getZ(), E));
+    detP.push_back(FV(momentum.getX()/GeV, momentum.getY()/GeV, momentum.getZ()/GeV, E));
 
     const G4ThreeVector position = track->GetPosition();
 

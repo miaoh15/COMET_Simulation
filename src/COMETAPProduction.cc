@@ -110,7 +110,7 @@ G4double COMETAPProduction::GetMeanFreePath(const G4Track& track, G4double, G4Fo
 
     fSqrt_S = W_cms.E();
 
-    G4double MicroCrossSection = 1000*fCHCrossSection->GetMicroCrossSection(fSqrt_S);
+    G4double MicroCrossSection = 2000*fCHCrossSection->GetMicroCrossSection(fSqrt_S);
     //G4cout<<"MicroCrossSection: "<<MicroCrossSection<<G4endl;
 
     G4Material* mat = track.GetMaterial();
