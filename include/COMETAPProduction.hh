@@ -54,6 +54,10 @@ class COMETAPProduction : public G4VDiscreteProcess
     vector<G4double> MaxDCSStore;
     vector<G4double> sqrt_S;
     TVector3 v_lab;
+
+    bool tag;
+    double upper;
+    double lower;
 };
 
 #endif

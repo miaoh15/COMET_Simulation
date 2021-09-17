@@ -24,6 +24,7 @@ class COMETProcessManager{
     void BeginOfEventAction(const G4Event* event);
     void EndOfEventAction();
     G4bool ProcessHits(G4Step* step);
+    void SteppingAction(const G4Step* );
 
     private:
     COMETHistoManager* fHistoManager;

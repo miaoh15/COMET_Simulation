@@ -50,6 +50,9 @@ COMETAPProduction::COMETAPProduction( const G4String& name, G4ProcessType aType)
         MaxDCSStore.push_back(MCS);
         sqrt_S.push_back(sqrt_S_d);
     }
+
+    upper = 112.*TMath::Pi()/180.;
+    lower = 92.*TMath::Pi()/180.;
 }
 
 COMETAPProduction::~COMETAPProduction(){
@@ -61,11 +64,16 @@ G4VParticleChange* COMETAPProduction::PostStepDoIt(const G4Track& trackData,
 
         if(CheckCondition(aStep)){
             GetDatas(&aStep);
-            PrepareSecondary(trackData);
+            if(tag == true){
+                PrepareSecondary(trackData);
 
-            fParticleChange.AddSecondary(Secondary1);
-            fParticleChange.ProposeTrackStatus(fStopAndKill);
-            //G4cout<<"Antiproton has been created !!!"<<G4endl;
+                fParticleChange.AddSecondary(Secondary1);
+                fParticleChange.ProposeTrackStatus(fStopAndKill);
+                //G4cout<<"Antiproton has been created !!!"<<G4endl;
+            }
+            else{
+                fParticleChange.ProposeTrackStatus(trackData.GetTrackStatus());
+            }
         }
         else{
             fParticleChange.ProposeTrackStatus(trackData.GetTrackStatus());
@@ -110,7 +118,7 @@ G4double COMETAPProduction::GetMeanFreePath(const G4Track& track, G4double, G4Fo
 
     fSqrt_S = W_cms.E();
 
-    G4double MicroCrossSection = 2000*fCHCrossSection->GetMicroCrossSection(fSqrt_S);
+    G4double MicroCrossSection = 1e7*fCHCrossSection->GetMicroCrossSection(fSqrt_S);
     //G4cout<<"MicroCrossSection: "<<MicroCrossSection<<G4endl;
 
     G4Material* mat = track.GetMaterial();
@@ -157,15 +165,21 @@ void COMETAPProduction::GetDatas(const G4Step* aStep){
     TLorentzVector pAntiproton(p*sin(theta)*cos(phi),p*sin(theta)*sin(phi), p*cos(theta), sqrt(p*p+Mproton*Mproton));
 
     //////////////////////////////////
-    G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+    /*G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
     analysisManager->FillNtupleDColumn(0, pAntiproton.Px());
     analysisManager->FillNtupleDColumn(1, pAntiproton.Py());
     analysisManager->FillNtupleDColumn(2, pAntiproton.Pz());
     analysisManager->FillNtupleDColumn(6, pAntiproton.P());
-    analysisManager->AddNtupleRow();
+    analysisManager->AddNtupleRow();*/
     //////////////////////////////////
 
     pAntiproton.Boost(v_lab);
+
+    if(!(pAntiproton.Theta()>lower&&pAntiproton.Theta()<upper)) {
+        tag = false;
+        return;
+    }
+    else tag = true;
 
     G4LorentzVector Antiproton(pAntiproton.Px()*GeV,pAntiproton.Py()*GeV,pAntiproton.Pz()*GeV,pAntiproton.E()*GeV);
 

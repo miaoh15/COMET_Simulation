@@ -11,6 +11,7 @@
 #include "globals.hh"
 
 class COMETRunAction;
+class COMETSteppingAction;
 
 /// Event action class
 ///
@@ -18,7 +19,7 @@ class COMETRunAction;
 class COMETEventAction : public G4UserEventAction
 {
   public:
-    COMETEventAction(COMETRunAction* runAction);
+    COMETEventAction(COMETRunAction* runAction, COMETSteppingAction* steppingAction);
     virtual ~COMETEventAction();
 
     virtual void BeginOfEventAction(const G4Event* event);
@@ -26,6 +27,7 @@ class COMETEventAction : public G4UserEventAction
 
   private:
     COMETRunAction* fRunAction;
+    COMETSteppingAction* fSteppingAction;
     COMETHistoManager* fHistoManager;
     COMETProcessManager* fProcessManager;
 };

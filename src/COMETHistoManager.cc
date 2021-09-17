@@ -109,8 +109,14 @@ void COMETHistoManager::SetSDHit(G4Step* step){
 
   G4Track* track = step->GetTrack();
 
-  if(track->GetTrackID()==1) return;
-  if(track->GetParticleDefinition()->GetPDGEncoding()!=-2212) return;
+  if(track->GetTrackID()==1) {
+    step->GetTrack()->SetTrackStatus(fStopAndKill);
+    return;
+  }
+  if(track->GetParticleDefinition()->GetPDGEncoding()!=-2212) {
+    step->GetTrack()->SetTrackStatus(fStopAndKill);
+    return;
+  }
   const G4ThreeVector position_ver = track->GetVertexPosition();
   G4double x = position_ver.x();
   G4double y = position_ver.y();
@@ -133,6 +139,7 @@ void COMETHistoManager::SetSDHit(G4Step* step){
     }
 
     detPos.push_back(FV(position.getX(), position.getY(), position.getZ(), track->GetGlobalTime()/ns));
+    step->GetTrack()->SetTrackStatus(fStopAndKill);
   }
 }
 

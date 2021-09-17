@@ -11,7 +11,7 @@ COMETProcessManager::COMETProcessManager(){
 }
 
 void COMETProcessManager::BeginOfRunAction(){
-    fHistoManager->OpenFile("/media/miaomiao/data/Analysis/COMET-alpha-analysis/results/output3.root");
+    fHistoManager->OpenFile("/media/miaomiao/data/Analysis/COMET-alpha-analysis/results/output_test.root");
     fHistoManager->CreateTree("event");
     fHistoManager->SetBranch();
 }
@@ -32,6 +32,11 @@ void COMETProcessManager::EndOfEventAction(){
 
 void COMETProcessManager::PreUserTrackingAction(const G4Track* track){
     fHistoManager->SetValuePre(track);
+}
+
+void COMETProcessManager::SteppingAction(const G4Step* step){
+    if(step->GetTrack()->GetDefinition()->GetPDGEncoding()==-2212&&step->GetTrack()->GetVertexPosition().mag()>=1.*CLHEP::m) 
+    step->GetTrack()->SetTrackStatus(fStopAndKill);
 }
 
 G4bool COMETProcessManager::ProcessHits(G4Step* step){

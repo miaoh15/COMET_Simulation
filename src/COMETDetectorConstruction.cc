@@ -37,13 +37,13 @@ G4VPhysicalVolume* COMETDetectorConstruction::Construct()
   
   // Target parameters
   //
-  //G4double target_length = 70*cm, target_radius = 13*mm;
-  G4double target_length = 10*cm, target_radius = 2*cm;
   G4Material* graphite = nist->FindOrBuildMaterial("G4_GRAPHITE");
 
-  G4Element* H = new G4Element("Hydrogen", "O", 1., 1.00794*g/mole);
-  G4Material* target_material = new G4Material("LiquidHydrogen", 70.8*kg/m3, 1);
-  target_material->AddElement(H, 2);
+  //G4Element* H = new G4Element("Hydrogen", "O", 1., 1.00794*g/mole);
+  //G4Material* target_material = new G4Material("LiquidHydrogen", 70.8*kg/m3, 1);
+  //target_material->AddElement(H, 2);
+  G4Material* target_material = nist->FindOrBuildMaterial("G4_Be");
+  //G4Material* target_material = nist->FindOrBuildMaterial("G4_Ta");
 
   //G4cout<<"Target Density: "<<target_material->GetDensity()/(g/cm3)<<G4endl;
    
@@ -62,9 +62,12 @@ G4VPhysicalVolume* COMETDetectorConstruction::Construct()
   //     
   // World
   //
-  G4double world_length = 2*m;
+  //G4double target_length = 70*cm, target_radius = 13*mm;
+  //G4double target_length = 10*cm, target_radius = 2*cm;
+  G4double target_length = 100*um, target_radius = 2*cm;
+  G4double world_length = 4*m;
   G4double world_radius = 4*m;;
-  G4double detector_radius = 0.5*m;
+  G4double detector_radius = 1*m;
   G4double detector_thickness = 0.01*m;
   
   G4VSolid* worldS = new G4Tubs("world", 0., world_radius, world_length/2, 0., 2*Pi);
@@ -103,7 +106,7 @@ G4VPhysicalVolume* COMETDetectorConstruction::Construct()
                     0,                       //copy number
                     checkOverlaps);          //overlaps checking
 
-  G4VSolid* detectorS = new G4Sphere("detector", detector_radius, detector_radius+detector_thickness, 0., 2*Pi, 0, Pi/2.);
+  G4VSolid* detectorS = new G4Sphere("detector", detector_radius, detector_radius+detector_thickness, 0., 2*Pi, 0, Pi*5./6.);
 
   detectorLV = new G4LogicalVolume(detectorS,
     graphite,
