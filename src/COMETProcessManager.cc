@@ -8,10 +8,11 @@ COMETProcessManager* COMETProcessManager::fProcessManager = 0;
 COMETProcessManager::COMETProcessManager(){
     fProcessManager = this;
     fHistoManager = COMETHistoManager::GetHistoManager();
+    fParameters = COMETParameters::GetParameters();
 }
 
 void COMETProcessManager::BeginOfRunAction(){
-    fHistoManager->OpenFile("/media/miaomiao/data/Analysis/COMET-alpha-analysis/results/output_test.root");
+    fHistoManager->OpenFile(fParameters->outputName);
     fHistoManager->CreateTree("event");
     fHistoManager->SetBranch();
 }
@@ -35,8 +36,10 @@ void COMETProcessManager::PreUserTrackingAction(const G4Track* track){
 }
 
 void COMETProcessManager::SteppingAction(const G4Step* step){
-    if(step->GetTrack()->GetDefinition()->GetPDGEncoding()==-2212&&step->GetTrack()->GetVertexPosition().mag()>=1.*CLHEP::m) 
-    step->GetTrack()->SetTrackStatus(fStopAndKill);
+    if(fParameters->only_target_AP == true){
+        if(step->GetTrack()->GetDefinition()->GetPDGEncoding()==-2212&&step->GetTrack()->GetVertexPosition().mag()>=fParameters->detector_radius) 
+        step->GetTrack()->SetTrackStatus(fStopAndKill);
+    }
 }
 
 G4bool COMETProcessManager::ProcessHits(G4Step* step){

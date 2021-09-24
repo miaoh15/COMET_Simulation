@@ -13,6 +13,7 @@
 #include "G4Tubs.hh"
 #include "G4Sphere.hh"
 #include "G4SDManager.hh"
+#include "G4VisAttributes.hh"
 
 static const double     Pi  = 3.14159265358979323846;
 
@@ -20,7 +21,8 @@ static const double     Pi  = 3.14159265358979323846;
 
 COMETDetectorConstruction::COMETDetectorConstruction()
 : G4VUserDetectorConstruction()
-{ 
+{
+  fParameters = COMETParameters::GetParameters(); 
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -42,7 +44,9 @@ G4VPhysicalVolume* COMETDetectorConstruction::Construct()
   //G4Element* H = new G4Element("Hydrogen", "O", 1., 1.00794*g/mole);
   //G4Material* target_material = new G4Material("LiquidHydrogen", 70.8*kg/m3, 1);
   //target_material->AddElement(H, 2);
-  G4Material* target_material = nist->FindOrBuildMaterial("G4_Be");
+  G4String title = "G4_";
+  G4String mat = title+fParameters->target_material;
+  G4Material* target_material = nist->FindOrBuildMaterial(mat);
   //G4Material* target_material = nist->FindOrBuildMaterial("G4_Ta");
 
   //G4cout<<"Target Density: "<<target_material->GetDensity()/(g/cm3)<<G4endl;
@@ -64,11 +68,13 @@ G4VPhysicalVolume* COMETDetectorConstruction::Construct()
   //
   //G4double target_length = 70*cm, target_radius = 13*mm;
   //G4double target_length = 10*cm, target_radius = 2*cm;
-  G4double target_length = 100*um, target_radius = 2*cm;
-  G4double world_length = 4*m;
-  G4double world_radius = 4*m;;
-  G4double detector_radius = 1*m;
-  G4double detector_thickness = 0.01*m;
+  G4double target_length = fParameters->target_length, target_radius = fParameters->target_radius;
+  G4double world_length = fParameters->world_length;
+  G4double world_radius = fParameters->world_radius;
+  G4double detector_radius = fParameters->detector_radius;
+  G4double detector_thickness = fParameters->detector_thickness;
+  G4double detector_theta_down = fParameters->detector_theta_down*TMath::Pi()/180.;
+  G4double detector_theta_up = fParameters->detector_theta_up*TMath::Pi()/180.;
   
   G4VSolid* worldS = new G4Tubs("world", 0., world_radius, world_length/2, 0., 2*Pi);
       
@@ -106,7 +112,7 @@ G4VPhysicalVolume* COMETDetectorConstruction::Construct()
                     0,                       //copy number
                     checkOverlaps);          //overlaps checking
 
-  G4VSolid* detectorS = new G4Sphere("detector", detector_radius, detector_radius+detector_thickness, 0., 2*Pi, 0, Pi*5./6.);
+  G4VSolid* detectorS = new G4Sphere("detector", detector_radius, detector_radius+detector_thickness, 0., 2*Pi, detector_theta_down, detector_theta_up);
 
   detectorLV = new G4LogicalVolume(detectorS,
     graphite,
@@ -120,6 +126,11 @@ G4VPhysicalVolume* COMETDetectorConstruction::Construct()
     false,
     0,
     checkOverlaps);
+
+  G4VisAttributes* detector_attributes = new G4VisAttributes;
+  detector_attributes->SetVisibility(true);
+  detector_attributes->SetColor(1.,1.,1.,0.5);
+  detectorLV->SetVisAttributes(detector_attributes);
 
   //
   //always return the physical World

@@ -4,6 +4,8 @@
 #include "G4UserStackingAction.hh"
 #include <string>
 
+#include "COMETParameters.hh"
+
 class G4Track;
 class COMETSteppingAction;
 
@@ -19,6 +21,7 @@ public:
 
 private:
   COMETSteppingAction* fSteppingAction;
+  COMETParameters* fParameters;
 };
 
 #endif

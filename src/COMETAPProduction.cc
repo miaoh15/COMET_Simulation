@@ -15,6 +15,8 @@ using namespace CLHEP;
 
 COMETAPProduction::COMETAPProduction( const G4String& name, G4ProcessType aType)
     : G4VDiscreteProcess(name,aType){
+
+    fParameters = COMETParameters::GetParameters();
     particleTable = G4ParticleTable::GetParticleTable();
     proton = particleTable->FindParticle("proton");
     anti_proton = particleTable->FindParticle("anti_proton");
@@ -27,7 +29,11 @@ COMETAPProduction::COMETAPProduction( const G4String& name, G4ProcessType aType)
     random = new TRandom();
     random->SetSeed(clock());
 
-    ifstream MDCS("/home/miaomiao/work/COMET-alpha/data/APPMaxDCS.txt");
+    ifstream MDCS;
+
+    if(fParameters->restrict_phase_space == false) MDCS = ifstream(fParameters->APPMaxDCS);
+    else MDCS = ifstream(fParameters->APPMaxDCS_RPS);
+
     string line;
     vector<string> MaxDCSStore_str;
 
@@ -51,8 +57,20 @@ COMETAPProduction::COMETAPProduction( const G4String& name, G4ProcessType aType)
         sqrt_S.push_back(sqrt_S_d);
     }
 
-    upper = 112.*TMath::Pi()/180.;
-    lower = 92.*TMath::Pi()/180.;
+    if(fParameters->cut_in_lab == true){
+        upper = fParameters->upper_bound*TMath::Pi()/180.;
+        lower = fParameters->lower_bound*TMath::Pi()/180.;
+    }
+    else {
+        upper = 180.*TMath::Pi()/180.;
+        lower = 0.*TMath::Pi()/180.;
+    }
+
+    RestrictPhaseSpace = fParameters->restrict_phase_space;
+    if(RestrictPhaseSpace == true){
+        p_min = fParameters->p_min;
+        theta_min = fParameters->theta_min;
+    }
 }
 
 COMETAPProduction::~COMETAPProduction(){
@@ -118,7 +136,9 @@ G4double COMETAPProduction::GetMeanFreePath(const G4Track& track, G4double, G4Fo
 
     fSqrt_S = W_cms.E();
 
-    G4double MicroCrossSection = 1e7*fCHCrossSection->GetMicroCrossSection(fSqrt_S);
+    G4double MicroCrossSection;
+    G4double multi = fParameters->multi;
+    MicroCrossSection = multi*fCHCrossSection->GetMicroCrossSection(fSqrt_S);
     //G4cout<<"MicroCrossSection: "<<MicroCrossSection<<G4endl;
 
     G4Material* mat = track.GetMaterial();
@@ -148,8 +168,12 @@ void COMETAPProduction::GetDatas(const G4Step* aStep){
     G4double Mproton = proton->GetPDGMass()/GeV;
     G4double Emax = (fSqrt_S*fSqrt_S-Mx*Mx+Mproton*Mproton)/(2*fSqrt_S);
     G4double pmax = sqrt(Emax*Emax-Mproton*Mproton);
-    G4double p = random->Uniform(0., pmax);
-    G4double theta = random->Uniform(0., pi);
+    G4double p;
+    if(RestrictPhaseSpace == false) p = random->Uniform(0., pmax);
+    else p = random->Uniform(p_min, pmax);
+    G4double theta;
+    if(RestrictPhaseSpace == false) theta = random->Uniform(0., pi);
+    else theta = random->Uniform(theta_min, pi);
     G4double MaxDCS = GetMaxDCS(fSqrt_S);
     G4double DifferentialCrossSection = random->Uniform(0.,MaxDCS);
     //G4cout<<"DCS: "<<ComputeDCS(p, theta, fSqrt_S)*p*p*sin(theta)*2*pi<<G4endl;
@@ -187,7 +211,7 @@ void COMETAPProduction::GetDatas(const G4Step* aStep){
 }
 
 G4double COMETAPProduction::GetMaxDCS(G4double sqrt_S_now){
-    if(sqrt_S_now<3.7525) return 0.;
+    if(sqrt_S_now<4.8325) return 0.;
 
     G4double upper_limit = 0., lower_limit = 0., upper_MCS = 0., lower_MCS = 0.;
     G4double MicroCrossSection = 0.;

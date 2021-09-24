@@ -4,6 +4,8 @@
 #ifndef COMETDetectorConstruction_h
 #define COMETDetectorConstruction_h 1
 
+#include "COMETParameters.hh"
+
 #include "G4VUserDetectorConstruction.hh"
 #include "globals.hh"
 
@@ -25,6 +27,8 @@ class COMETDetectorConstruction : public G4VUserDetectorConstruction
     virtual void ConstructSDandField();
 
     G4LogicalVolume* detectorLV;
+
+    COMETParameters* fParameters;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

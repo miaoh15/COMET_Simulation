@@ -19,6 +19,7 @@ COMETHistoManager* COMETHistoManager::fHistoManager = 0;
 COMETHistoManager::COMETHistoManager()
  {
    fHistoManager = this;
+   fParameters = COMETParameters::GetParameters();
  }
 
 COMETHistoManager::~COMETHistoManager()
@@ -70,13 +71,14 @@ void COMETHistoManager::Close(){
 void COMETHistoManager::SetValuePre(const G4Track* track){
 
   if(track->GetTrackID()==1) return;
-  if(track->GetParticleDefinition()->GetPDGEncoding()!=-2212) return;
+  if(fParameters->collect_only_AP){
+    if(track->GetParticleDefinition()->GetPDGEncoding()!=-2212) return;
+  }
 
   const G4ThreeVector position = track->GetVertexPosition();
   G4double x = position.x();
   G4double y = position.y();
   G4double z = position.z();
-  if(sqrt(x*x+y*y)>20.*mm || TMath::Abs(z)>50.*mm) return;
 
   TrackID.push_back(track->GetTrackID());
   ParentID.push_back(track->GetParentID());
@@ -109,13 +111,16 @@ void COMETHistoManager::SetSDHit(G4Step* step){
 
   G4Track* track = step->GetTrack();
 
-  if(track->GetTrackID()==1) {
-    step->GetTrack()->SetTrackStatus(fStopAndKill);
-    return;
-  }
-  if(track->GetParticleDefinition()->GetPDGEncoding()!=-2212) {
-    step->GetTrack()->SetTrackStatus(fStopAndKill);
-    return;
+  if(fParameters->kill_secondary == true){
+
+    if(track->GetTrackID()==1) {
+      step->GetTrack()->SetTrackStatus(fStopAndKill);
+      return;
+    }
+    if(track->GetParticleDefinition()->GetPDGEncoding()!=-2212) {
+      step->GetTrack()->SetTrackStatus(fStopAndKill);
+      return;
+    }
   }
   const G4ThreeVector position_ver = track->GetVertexPosition();
   G4double x = position_ver.x();
@@ -139,7 +144,9 @@ void COMETHistoManager::SetSDHit(G4Step* step){
     }
 
     detPos.push_back(FV(position.getX(), position.getY(), position.getZ(), track->GetGlobalTime()/ns));
-    step->GetTrack()->SetTrackStatus(fStopAndKill);
+    if(fParameters->kill_secondary == true){
+      step->GetTrack()->SetTrackStatus(fStopAndKill);
+    }
   }
 }
 

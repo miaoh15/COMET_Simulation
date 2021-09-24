@@ -2,6 +2,7 @@
 #define COMETProcessManager_h 1
 
 #include "COMETHistoManager.hh"
+#include "COMETParameters.hh"
 #include "globals.hh"
 
 #include "G4Track.hh"
@@ -29,6 +30,7 @@ class COMETProcessManager{
     private:
     COMETHistoManager* fHistoManager;
     static COMETProcessManager* fProcessManager;
+    COMETParameters* fParameters;
 };
 
 #endif

@@ -16,7 +16,8 @@ using namespace std;
 
 COMETStackingAction::COMETStackingAction(COMETSteppingAction* steppingAction)
   : fSteppingAction(steppingAction)
-{;
+{
+        fParameters = COMETParameters::GetParameters();
 }
 
 COMETStackingAction::~COMETStackingAction()
@@ -33,5 +34,7 @@ G4ClassificationOfNewTrack COMETStackingAction
 }
 
 void COMETStackingAction::NewStage(){
-    if(!(fSteppingAction->GetTag()==1)) stackManager->clear();
+    if(fParameters->kill_secondary == true){
+        if(!(fSteppingAction->GetTag()==1)) stackManager->clear();
+    }
 }

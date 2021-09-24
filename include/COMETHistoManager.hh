@@ -7,6 +7,8 @@
 #include "G4Track.hh"
 #include "G4VProcess.hh"
 
+#include "COMETParameters.hh"
+
 #include <vector>
 #include <string>
 
@@ -40,6 +42,7 @@ class COMETHistoManager{
   private:
 
     static COMETHistoManager* fHistoManager;
+    COMETParameters* fParameters;
 
     TFile* fTestRooFile;
     TTree*   fTestTree;

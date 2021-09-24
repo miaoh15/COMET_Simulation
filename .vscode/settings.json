@@ -8,6 +8,8 @@
         "ComputeCrossSection.C": "cpp",
         "iosfwd": "cpp",
         "vec3": "cpp",
-        "vec4": "cpp"
+        "vec4": "cpp",
+        "*.tcc": "cpp",
+        "fstream": "cpp"
     }
 }

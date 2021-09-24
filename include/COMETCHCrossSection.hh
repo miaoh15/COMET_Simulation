@@ -5,6 +5,8 @@
 #include "G4Material.hh"
 #include "G4ParticleDefinition.hh"
 
+#include "COMETParameters.hh"
+
 using namespace std;
 
 class COMETCHCrossSection
@@ -19,6 +21,8 @@ class COMETCHCrossSection
     private:
     vector<G4double> CrossSectionStore;
     vector<G4double> sqrt_S;
+
+    COMETParameters* fParameters;
 };
 
 #endif

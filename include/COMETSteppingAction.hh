@@ -7,6 +7,8 @@
 #include "G4UserSteppingAction.hh"
 #include "globals.hh"
 
+#include "COMETParameters.hh"
+
 class COMETEventAction;
 
 class G4LogicalVolume;
@@ -32,6 +34,7 @@ class COMETSteppingAction : public G4UserSteppingAction
   private:
     COMETHistoManager* fHistoManager;
     COMETProcessManager* fProcessManager;
+    COMETParameters* fParameters;
 
     int tag;
     // -1 other process of proton

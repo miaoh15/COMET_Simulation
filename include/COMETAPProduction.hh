@@ -9,6 +9,7 @@
 #include "TLorentzVector.h"
 
 #include "COMETCHCrossSection.hh"
+#include "COMETParameters.hh"
 
 class COMETAPProduction : public G4VDiscreteProcess
 {
@@ -55,9 +56,16 @@ class COMETAPProduction : public G4VDiscreteProcess
     vector<G4double> sqrt_S;
     TVector3 v_lab;
 
+    COMETParameters* fParameters;
+
     bool tag;
     double upper;
     double lower;
+
+    // for restrict phase space
+    bool RestrictPhaseSpace;
+    double p_min;
+    double theta_min;
 };
 
 #endif

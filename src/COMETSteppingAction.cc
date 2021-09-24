@@ -22,6 +22,7 @@ COMETSteppingAction::COMETSteppingAction()
 : G4UserSteppingAction()
 {
   fProcessManager = new COMETProcessManager();
+  fParameters = COMETParameters::GetParameters();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -35,13 +36,16 @@ void COMETSteppingAction::UserSteppingAction(const G4Step* step)
 {
   G4Track* track = step->GetTrack();
 
-  if(step->GetPreStepPoint()->GetPhysicalVolume()->GetName()=="target"&&step->GetPostStepPoint()->GetPhysicalVolume()->GetName()=="World"){
-    if(track->GetTrackID()==1){
-      tag = 0;
-      track->SetTrackStatus(fStopAndKill);
-    }
-    if(track->GetDefinition()->GetPDGEncoding()==-2212&&track->GetParentID()==1){
-      tag = 1;
+  if(fParameters->kill_secondary == true){
+
+    if(step->GetPreStepPoint()->GetPhysicalVolume()->GetName()=="target"&&step->GetPostStepPoint()->GetPhysicalVolume()->GetName()=="World"){
+      if(track->GetTrackID()==1){
+        tag = 0;
+        track->SetTrackStatus(fStopAndKill);
+      }
+      if(track->GetDefinition()->GetPDGEncoding()==-2212&&track->GetParentID()==1){
+        tag = 1;
+      }
     }
   }
 

@@ -5,8 +5,12 @@ using namespace std;
 
 COMETCHCrossSection::COMETCHCrossSection(G4ParticleDefinition* particle)
 {
+    fParameters = COMETParameters::GetParameters();
     if(particle->GetParticleName()=="anti_proton"){
-        ifstream CS("/home/miaomiao/work/COMET-alpha/data/AntiprotonMicroCrossSection.txt");
+        ifstream CS;
+
+        if(fParameters->restrict_phase_space == false) CS = ifstream(fParameters->MCS);
+        else CS = ifstream(fParameters->MCS_RPS);
 
         string line;
 
@@ -37,7 +41,8 @@ COMETCHCrossSection::COMETCHCrossSection(G4ParticleDefinition* particle)
 COMETCHCrossSection::~COMETCHCrossSection(){}
 
 G4double COMETCHCrossSection::GetMicroCrossSection(G4double sqrt_S_now){
-    if(sqrt_S_now<3.7525) return 0.;
+
+    if(sqrt_S_now<=4.8325) return 1e-40;
 
     G4double upper_limit = 0., lower_limit = 0., upper_MCS = 0., lower_MCS = 0.;
     G4double MicroCrossSection = 0.;
@@ -55,6 +60,8 @@ G4double COMETCHCrossSection::GetMicroCrossSection(G4double sqrt_S_now){
             break;
         }
     }
+
+    if(lower_MCS == 0 && upper_MCS == 0) return 1e-40;
 
     MicroCrossSection = exp(log(lower_MCS)+(log(upper_MCS)-log(lower_MCS))*((sqrt_S_now-lower_limit)/(upper_limit-lower_limit)));
 
