@@ -19,24 +19,23 @@ COMETPrimaryGeneratorAction::COMETPrimaryGeneratorAction()
 : G4VUserPrimaryGeneratorAction(),
   fParticleGun(0)
 {
-  G4int n_particle = 1;
-  fParticleGun  = new G4ParticleGun(n_particle);
+  fParameters = COMETParameters::GetParameters();
+  fParticleGun  = new G4ParticleGun(fParameters->Nparticle);
 
   // default particle kinematic
   G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
-  G4String particleName;
   G4ParticleDefinition* particle
-    = particleTable->FindParticle(particleName="proton");
+    = particleTable->FindParticle(fParameters->particle);
   fParticleGun->SetParticleDefinition(particle);
-  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,1.));
+  fParticleGun->SetParticleMomentumDirection(fParameters->PDirection);
   //fParticleGun->SetParticleEnergy(18.2849*GeV);
   //fParticleGun->SetParticleEnergy(10.8977*GeV);
-  fParticleGun->SetParticleEnergy(10.*GeV);
+  fParticleGun->SetParticleEnergy(fParameters->energy);
 
   random = new TRandom();
   random->SetSeed(clock());
   
-  rho = new TF1("rho", "x", 0, deviation);
+  if(fParameters->Smearing) rho = new TF1("rho", "x", 0, fParameters->MaxSmearing);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -50,14 +49,18 @@ COMETPrimaryGeneratorAction::~COMETPrimaryGeneratorAction()
 
 void COMETPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 {
-  /*G4double R = rho->GetRandom(0., deviation);
+  if(fParameters->Smearing){
+    G4double R = rho->GetRandom(0., fParameters->Smearing);
 
-  G4double x,y;
-  random->Circle(x,y,R);
+    G4double x,y;
+    random->Circle(x,y,R);
 
-  fParticleGun->SetParticlePosition(G4ThreeVector(x,y,-1.*m));*/
+    fParticleGun->SetParticlePosition(G4ThreeVector(x,y,-1.*m));
+  }
 
-  fParticleGun->SetParticlePosition(G4ThreeVector(0.,0.,-2.*m));
+  else{
+    fParticleGun->SetParticlePosition(G4ThreeVector(0.,0.,-2.*m));
+  }
 
   fParticleGun->GeneratePrimaryVertex(anEvent);
 }

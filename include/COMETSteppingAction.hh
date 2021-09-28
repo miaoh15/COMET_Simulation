@@ -28,27 +28,12 @@ class COMETSteppingAction : public G4UserSteppingAction
 
     // method from the base class
     virtual void UserSteppingAction(const G4Step*);
-    inline void SetTag(int _tag);
-    inline int GetTag() const;
 
   private:
     COMETHistoManager* fHistoManager;
     COMETProcessManager* fProcessManager;
     COMETParameters* fParameters;
-
-    int tag;
-    // -1 other process of proton
-    // 0 proton go through the target
-    // 1 anti-proton production
 };
-
-inline void COMETSteppingAction::SetTag(int _tag){
-  tag = _tag;
-}
-
-inline int COMETSteppingAction::GetTag() const {
-  return tag;
-}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 

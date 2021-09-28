@@ -19,16 +19,13 @@ class COMETSteppingAction;
 class COMETEventAction : public G4UserEventAction
 {
   public:
-    COMETEventAction(COMETRunAction* runAction, COMETSteppingAction* steppingAction);
+    COMETEventAction();
     virtual ~COMETEventAction();
 
     virtual void BeginOfEventAction(const G4Event* event);
     virtual void EndOfEventAction(const G4Event* event);
 
   private:
-    COMETRunAction* fRunAction;
-    COMETSteppingAction* fSteppingAction;
-    COMETHistoManager* fHistoManager;
     COMETProcessManager* fProcessManager;
 };
 

@@ -1,6 +1,8 @@
 #ifndef COMETParameters_h
 #define COMETParameters_h 1
 
+#include "G4ThreeVector.hh"
+
 #include <string>
 #include "globals.hh"
 
@@ -42,6 +44,15 @@ class COMETParameters{
     bool kill_secondary;
     bool collect_only_AP;
     bool only_target_AP;
+
+    // for generator
+    G4String particle;
+    int Nparticle;
+    double energy; // GeV
+    G4ThreeVector PDirection;
+    G4ThreeVector Position;
+    bool Smearing;
+    G4double MaxSmearing;
 
     // for cross section data
     string MCS;

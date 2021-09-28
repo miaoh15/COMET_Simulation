@@ -11,7 +11,7 @@
 class COMETTrackingAction : public G4UserTrackingAction {
 
     public:
-        COMETTrackingAction(COMETRunAction* runAction);
+        COMETTrackingAction();
         ~COMETTrackingAction();
 
         void PreUserTrackingAction(const G4Track*);

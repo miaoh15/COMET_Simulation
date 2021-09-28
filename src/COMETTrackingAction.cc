@@ -9,8 +9,8 @@
 using namespace CLHEP;
 using namespace std;
 
-COMETTrackingAction::COMETTrackingAction(COMETRunAction* runAction)
-: fRunAction(runAction)
+COMETTrackingAction::COMETTrackingAction() 
+: G4UserTrackingAction()
 {
     fProcessManager = COMETProcessManager::GetProcessManager();
 }

@@ -1,5 +1,4 @@
 #include "COMETPhysicsConstructor.hh"
-#include "COMETAntiprotonProduction.hh"
 #include "COMETAPProduction.hh"
 
 #include "globals.hh"

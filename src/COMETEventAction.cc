@@ -12,10 +12,8 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-COMETEventAction::COMETEventAction(COMETRunAction* runAction, COMETSteppingAction* steppingAction)
-: G4UserEventAction(),
-  fRunAction(runAction),
-  fSteppingAction(steppingAction)
+COMETEventAction::COMETEventAction()
+: G4UserEventAction()
 {
     fProcessManager = COMETProcessManager::GetProcessManager();
 } 
@@ -30,14 +28,12 @@ COMETEventAction::~COMETEventAction()
 void COMETEventAction::BeginOfEventAction(const G4Event* event)
 {
     fProcessManager->BeginOfEventAction(event);
-    fSteppingAction->SetTag(-1);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void COMETEventAction::EndOfEventAction(const G4Event*)
 {
-    if(!(fSteppingAction->GetTag()==1)) return;
     fProcessManager->EndOfEventAction();
 }
 

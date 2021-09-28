@@ -18,6 +18,7 @@ COMETStackingAction::COMETStackingAction(COMETSteppingAction* steppingAction)
   : fSteppingAction(steppingAction)
 {
         fParameters = COMETParameters::GetParameters();
+        fProcessManager = COMETProcessManager::GetProcessManager();
 }
 
 COMETStackingAction::~COMETStackingAction()
@@ -35,6 +36,6 @@ G4ClassificationOfNewTrack COMETStackingAction
 
 void COMETStackingAction::NewStage(){
     if(fParameters->kill_secondary == true){
-        if(!(fSteppingAction->GetTag()==1)) stackManager->clear();
+        if(!(fProcessManager->GetTag()==1)) stackManager->clear();
     }
 }

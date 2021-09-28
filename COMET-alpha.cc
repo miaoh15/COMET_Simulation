@@ -3,7 +3,6 @@
 
 #include "COMETDetectorConstruction.hh"
 #include "COMETActionInitialization.hh"
-#include "COMETAntiprotonProduction.hh"
 #include "COMETPhysicsConstructor.hh"
 #include "QGSP_BERT_HP.hh"
 

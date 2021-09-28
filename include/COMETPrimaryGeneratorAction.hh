@@ -8,6 +8,8 @@
 #include "G4ParticleGun.hh"
 #include "globals.hh"
 
+#include "COMETParameters.hh"
+
 #include "TRandom.h"
 #include "TF1.h"
 
@@ -35,8 +37,7 @@ class COMETPrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
   
   private:
     G4ParticleGun*  fParticleGun; // pointer a to G4 gun class
-
-    G4double deviation = 2.5*mm;
+    COMETParameters* fParameters;
 
     TRandom* random;
     TF1* rho;

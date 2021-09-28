@@ -12,28 +12,17 @@ COMETCHCrossSection::COMETCHCrossSection(G4ParticleDefinition* particle)
         if(fParameters->restrict_phase_space == false) CS = ifstream(fParameters->MCS);
         else CS = ifstream(fParameters->MCS_RPS);
 
-        string line;
-
-        vector<string> CrossSectionStore_str;
+        G4double tmp;
 
         if(CS){
-            while(getline(CS, line)){
-                CrossSectionStore_str.push_back(line);
+            int i=0;
+            while(!CS.eof()){
+                CS >> tmp;
+                if(i%2 == 0) sqrt_S.push_back(tmp);
+                else if(i%2 == 1) CrossSectionStore.push_back(tmp);
+                else cout<<"Error in read micro cross section !!!"<<endl;
+                i++;
             }
-        }
-
-        string::size_type size;
-
-        for(G4int i=0; i<CrossSectionStore_str.size(); i++){
-            string temp = CrossSectionStore_str.at(i);
-            string::size_type temp_pos = temp.find("    ");
-            string sqrt_S_str = temp.substr(0, temp_pos);
-            G4double sqrt_S_d = stod(sqrt_S_str, &size);
-            string temp_MCS_str = temp.substr(temp_pos);
-            temp_MCS_str.erase(remove(temp_MCS_str.begin(),temp_MCS_str.end(),' '), temp_MCS_str.end());
-            G4double MCS = stod(temp_MCS_str, &size);
-            CrossSectionStore.push_back(MCS);
-            sqrt_S.push_back(sqrt_S_d);
         }
     }
 }
@@ -47,9 +36,7 @@ G4double COMETCHCrossSection::GetMicroCrossSection(G4double sqrt_S_now){
     G4double upper_limit = 0., lower_limit = 0., upper_MCS = 0., lower_MCS = 0.;
     G4double MicroCrossSection = 0.;
 
-    string::size_type size;
-
-    for(G4int i=0; i<sqrt_S.size(); i++){
+    for(long unsigned int i=0; i<sqrt_S.size(); i++){
         lower_limit = sqrt_S.at(i);
         upper_limit = sqrt_S.at(i+1);
         if(!(lower_limit<sqrt_S_now && upper_limit>sqrt_S_now)) continue;

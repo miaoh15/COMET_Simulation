@@ -57,6 +57,10 @@ set(COMET-alpha_SCRIPTS
   run1.mac
   run2.mac
   vis.mac
+  data/AntiprotonMicroCrossSection.txt
+  data/APPMaxDCS.txt
+  data/APPMaxDCS_RPS.txt
+  data/MCSRestrictPhaseSpace.txt
   )
 
 foreach(_script ${COMET-alpha_SCRIPTS})

@@ -70,15 +70,7 @@ void COMETHistoManager::Close(){
 
 void COMETHistoManager::SetValuePre(const G4Track* track){
 
-  if(track->GetTrackID()==1) return;
-  if(fParameters->collect_only_AP){
-    if(track->GetParticleDefinition()->GetPDGEncoding()!=-2212) return;
-  }
-
   const G4ThreeVector position = track->GetVertexPosition();
-  G4double x = position.x();
-  G4double y = position.y();
-  G4double z = position.z();
 
   TrackID.push_back(track->GetTrackID());
   ParentID.push_back(track->GetParentID());

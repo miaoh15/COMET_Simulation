@@ -5,6 +5,7 @@
 #include <string>
 
 #include "COMETParameters.hh"
+#include "COMETProcessManager.hh"
 
 class G4Track;
 class COMETSteppingAction;
@@ -22,6 +23,7 @@ public:
 private:
   COMETSteppingAction* fSteppingAction;
   COMETParameters* fParameters;
+  COMETProcessManager* fProcessManager;
 };
 
 #endif

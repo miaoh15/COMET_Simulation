@@ -2,6 +2,8 @@
 
 #include "COMETParameters.hh"
 
+#include <unistd.h>
+
 COMETParameters* COMETParameters::fParameters = 0;
 
 COMETParameters::COMETParameters(){
@@ -20,28 +22,42 @@ COMETParameters::COMETParameters(){
     target_material = "Be";
 
     // for cut in laboratory coordinate
-    cut_in_lab = true;
+    cut_in_lab = false; // Only collect particles fly in a certain range of direction.
     lower_bound = 90.;
     upper_bound = 180.;
 
     // for restrict phase space
-    restrict_phase_space = true;
+    restrict_phase_space = false; // Restrict the phase space P [1.4, inf] theta [2.6, pi].
     p_min = 1.4;
     theta_min = 2.6;
 
     // for multiply cross section
-    multi = 1e14;
+    multi = 1e10;
+
+    // for generator
+    particle = "proton";
+    Nparticle = 1;
+    energy = 10.*GeV; // GeV
+    PDirection = G4ThreeVector(0.,0.,1.);
+    Position = G4ThreeVector(0.,0.,-2.*m);
+    Smearing = false;
+    MaxSmearing = 2.5*mm;
 
     // for simplify simulation
-    kill_secondary = true;
-    collect_only_AP = true;
-    only_target_AP = true;
+    kill_secondary = false; // To kill secondary particles and primary particles, only anti-proton will be reserved and be killed after being detected.
+    collect_only_AP = true; // Only information of an-riprotons will be write in ROOT file.
+    only_target_AP = false; // Only anti-protons created within target will be reserved, in other word, AP created in detector will be killed.
 
     // for cross section data
-    MCS = "/home/miaomiao/work/COMET-alpha/data/AntiprotonMicroCrossSection.txt";
-    MCS_RPS = "/home/miaomiao/work/COMET-alpha/data/MCSRestrictPhaseSpace.txt";
-    APPMaxDCS = "/home/miaomiao/work/COMET-alpha/data/APPMaxDCS.txt";
-    APPMaxDCS_RPS = "/home/miaomiao/work/COMET-alpha/data/APPMaxDCS_RPS.txt";
+    char current_path[255];
+    if(!getcwd(current_path, 255)) cout<<"Fatal: Current path cannot access properly !!!"<<endl;
+    string path = current_path;
+    path = path+"/";
+
+    MCS = path+"data/AntiprotonMicroCrossSection.txt";
+    MCS_RPS = path+"data/MCSRestrictPhaseSpace.txt";
+    APPMaxDCS = path+"data/APPMaxDCS.txt";
+    APPMaxDCS_RPS = path+"data/APPMaxDCS_RPS.txt";
 
     // for output file
     outputName = "/media/miaomiao/data/Analysis/COMET-alpha-analysis/results/output_test.root";

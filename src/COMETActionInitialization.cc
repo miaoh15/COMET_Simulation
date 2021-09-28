@@ -35,17 +35,14 @@ void COMETActionInitialization::Build() const
 { 
   SetUserAction(new COMETPrimaryGeneratorAction);
 
-  COMETRunAction* runAction = new COMETRunAction();
-  SetUserAction(runAction);
+  SetUserAction(new COMETRunAction());
+
+  SetUserAction(new COMETEventAction());
+
+  SetUserAction(new COMETTrackingAction());
 
   COMETSteppingAction* steppingAction = new COMETSteppingAction();
-  
-  COMETEventAction* eventAction = new COMETEventAction(runAction, steppingAction);
-  SetUserAction(eventAction);
-  
   SetUserAction(steppingAction);
-
-  SetUserAction(new COMETTrackingAction(runAction));
 
   SetUserAction(new COMETStackingAction(steppingAction));
 }  

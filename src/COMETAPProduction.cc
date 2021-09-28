@@ -34,27 +34,17 @@ COMETAPProduction::COMETAPProduction( const G4String& name, G4ProcessType aType)
     if(fParameters->restrict_phase_space == false) MDCS = ifstream(fParameters->APPMaxDCS);
     else MDCS = ifstream(fParameters->APPMaxDCS_RPS);
 
-    string line;
-    vector<string> MaxDCSStore_str;
+    G4double tmp;
 
     if(MDCS){
-        while(getline(MDCS, line)){
-            MaxDCSStore_str.push_back(line);
+        int i=0;
+        while(!MDCS.eof()){
+            MDCS >> tmp;
+            if(i%2 == 0) sqrt_S.push_back(tmp);
+            else if(i%2 == 1) MaxDCSStore.push_back(tmp);
+            else cout<<"Error in read max cross section !!!"<<endl;
+            i++;
         }
-    }
-
-    string::size_type size;
-
-    for(G4int i=0; i<MaxDCSStore_str.size(); i++){
-        string temp = MaxDCSStore_str.at(i);
-        string::size_type temp_pos = temp.find("    ");
-        string sqrt_S_str = temp.substr(0, temp_pos);
-        G4double sqrt_S_d = stod(sqrt_S_str, &size);
-        string temp_MCS_str = temp.substr(temp_pos);
-        temp_MCS_str.erase(remove(temp_MCS_str.begin(),temp_MCS_str.end(),' '), temp_MCS_str.end());
-        G4double MCS = stod(temp_MCS_str, &size);
-        MaxDCSStore.push_back(MCS);
-        sqrt_S.push_back(sqrt_S_d);
     }
 
     if(fParameters->cut_in_lab == true){
@@ -188,15 +178,6 @@ void COMETAPProduction::GetDatas(const G4Step* aStep){
 
     TLorentzVector pAntiproton(p*sin(theta)*cos(phi),p*sin(theta)*sin(phi), p*cos(theta), sqrt(p*p+Mproton*Mproton));
 
-    //////////////////////////////////
-    /*G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-    analysisManager->FillNtupleDColumn(0, pAntiproton.Px());
-    analysisManager->FillNtupleDColumn(1, pAntiproton.Py());
-    analysisManager->FillNtupleDColumn(2, pAntiproton.Pz());
-    analysisManager->FillNtupleDColumn(6, pAntiproton.P());
-    analysisManager->AddNtupleRow();*/
-    //////////////////////////////////
-
     pAntiproton.Boost(v_lab);
 
     if(!(pAntiproton.Theta()>lower&&pAntiproton.Theta()<upper)) {
@@ -216,9 +197,7 @@ G4double COMETAPProduction::GetMaxDCS(G4double sqrt_S_now){
     G4double upper_limit = 0., lower_limit = 0., upper_MCS = 0., lower_MCS = 0.;
     G4double MicroCrossSection = 0.;
 
-    string::size_type size;
-
-    for(G4int i=0; i<sqrt_S.size(); i++){
+    for(long unsigned int i=0; i<sqrt_S.size(); i++){
         lower_limit = sqrt_S.at(i);
         upper_limit = sqrt_S.at(i+1);
         if(!(lower_limit<sqrt_S_now && upper_limit>sqrt_S_now)) continue;

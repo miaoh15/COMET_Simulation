@@ -25,18 +25,6 @@ using namespace std;
 COMETRunAction::COMETRunAction()
 : G4UserRunAction()
   {
-    /*G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-
-    analysisManager->CreateNtuple("COMET","event");
-    analysisManager->CreateNtupleDColumn("Px");
-    analysisManager->CreateNtupleDColumn("Py");
-    analysisManager->CreateNtupleDColumn("Pz");
-    analysisManager->CreateNtupleDColumn("Posx");
-    analysisManager->CreateNtupleDColumn("Posy");
-    analysisManager->CreateNtupleDColumn("Posz");
-    analysisManager->CreateNtupleDColumn("P");
-    analysisManager->FinishNtuple();*/
-
     fProcessManager = COMETProcessManager::GetProcessManager();
   }
 
@@ -44,33 +32,19 @@ COMETRunAction::COMETRunAction()
 
 COMETRunAction::~COMETRunAction()
 {
-  //delete G4AnalysisManager::Instance();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void COMETRunAction::BeginOfRunAction(const G4Run* aRun)
 { 
-G4cout << "### Run " << aRun->GetRunID() << " start." << G4endl;
-
-fProcessManager->BeginOfRunAction();
-
-/*G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-G4String fileName = "COMET_data";
-analysisManager->OpenFile(fileName);*/
-
-G4Random::setTheSeed(clock());
+fProcessManager->BeginOfRunAction(aRun);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void COMETRunAction::EndOfRunAction(const G4Run*)
 {
-
-  /*G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-  analysisManager->Write();
-  analysisManager->CloseFile();*/
-
   fProcessManager->EndOfRunAction();
 }
 
