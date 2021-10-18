@@ -47,6 +47,8 @@ void COMETHistoManager::ClearVector(){
   Pos.clear();
   detP.clear();
   detPos.clear();
+
+  backward = false;
 }
 
 void COMETHistoManager::SetBranch(){
@@ -118,7 +120,7 @@ void COMETHistoManager::SetSDHit(G4Step* step){
   G4double x = position_ver.x();
   G4double y = position_ver.y();
   G4double z = position_ver.z();
-  if(sqrt(x*x+y*y)>20.*mm || TMath::Abs(z)>50.*mm) return;
+  if(sqrt(x*x+y*y)>fParameters->target_radius || TMath::Abs(z)>fParameters->target_length/2.) return;
 
   if(Enter){
     const G4ThreeVector momentum = track->GetMomentum();
@@ -139,6 +141,8 @@ void COMETHistoManager::SetSDHit(G4Step* step){
     if(fParameters->kill_secondary == true){
       step->GetTrack()->SetTrackStatus(fStopAndKill);
     }
+
+    if(position.getZ()<0.) backward = true;
   }
 }
 

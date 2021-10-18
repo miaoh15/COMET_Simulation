@@ -2,6 +2,7 @@
 /// \brief Implementation of the COMETPrimaryGeneratorAction class
 
 #include "COMETPrimaryGeneratorAction.hh"
+#include "COMETRandomSvc.hh"
 
 #include "G4LogicalVolumeStore.hh"
 #include "G4LogicalVolume.hh"
@@ -32,8 +33,7 @@ COMETPrimaryGeneratorAction::COMETPrimaryGeneratorAction()
   //fParticleGun->SetParticleEnergy(10.8977*GeV);
   fParticleGun->SetParticleEnergy(fParameters->energy);
 
-  random = new TRandom();
-  random->SetSeed(clock());
+  random = COMETRandomSvc::GetRandomSvc()->GetRandomROOT();
   
   if(fParameters->Smearing) rho = new TF1("rho", "x", 0, fParameters->MaxSmearing);
 }
@@ -50,7 +50,7 @@ COMETPrimaryGeneratorAction::~COMETPrimaryGeneratorAction()
 void COMETPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 {
   if(fParameters->Smearing){
-    G4double R = rho->GetRandom(0., fParameters->Smearing);
+    G4double R = rho->GetRandom(0., fParameters->Smearing, random, nullptr);
 
     G4double x,y;
     random->Circle(x,y,R);

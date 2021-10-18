@@ -38,6 +38,7 @@ class COMETHistoManager{
 
     template<typename ItemType>
     void SetBranch(std::string name, ItemType& item);
+    inline bool IsBackward() const;
 
   private:
 
@@ -58,11 +59,17 @@ class COMETHistoManager{
     vFV detP;
     vFV detPos;
 
+    bool backward;
+
 };
 
 template<typename ItemType>
 void COMETHistoManager::SetBranch(std::string name, ItemType& item){
   fTestTree->Branch(name.c_str(), &item);
+}
+
+inline bool COMETHistoManager::IsBackward() const {
+  return backward;
 }
 
 #endif

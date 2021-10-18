@@ -22,17 +22,17 @@ COMETParameters::COMETParameters(){
     target_material = "Be";
 
     // for cut in laboratory coordinate
-    cut_in_lab = false; // Only collect particles fly in a certain range of direction.
+    cut_in_lab = true; // Only collect particles fly in a certain range of direction.
     lower_bound = 90.;
     upper_bound = 180.;
 
     // for restrict phase space
-    restrict_phase_space = false; // Restrict the phase space P [1.4, inf] theta [2.6, pi].
+    restrict_phase_space = true; // Restrict the phase space P [1.4, inf] theta [2.6, pi].
     p_min = 1.4;
     theta_min = 2.6;
 
     // for multiply cross section
-    multi = 1e10;
+    multi = 1e15;
 
     // for generator
     particle = "proton";
@@ -44,9 +44,9 @@ COMETParameters::COMETParameters(){
     MaxSmearing = 2.5*mm;
 
     // for simplify simulation
-    kill_secondary = false; // To kill secondary particles and primary particles, only anti-proton will be reserved and be killed after being detected.
+    kill_secondary = true; // To kill secondary particles and primary particles, only anti-proton will be reserved and be killed after being detected.
     collect_only_AP = true; // Only information of an-riprotons will be write in ROOT file.
-    only_target_AP = false; // Only anti-protons created within target will be reserved, in other word, AP created in detector will be killed.
+    only_target_AP = true; // Only anti-protons created within target will be reserved, in other word, AP created in detector will be killed.
 
     // for cross section data
     char current_path[255];
@@ -60,7 +60,8 @@ COMETParameters::COMETParameters(){
     APPMaxDCS_RPS = path+"data/APPMaxDCS_RPS.txt";
 
     // for output file
-    outputName = "/media/miaomiao/data/Analysis/COMET-alpha-analysis/results/output_test.root";
+    //outputName = "/media/miaomiao/data/Analysis/COMET-alpha-analysis/results/output_test.root";
+    outputName = "output.root";
 }
 
 COMETParameters::~COMETParameters(){

@@ -2,6 +2,7 @@
 #include "COMETDetectorConstruction.hh"
 #include "COMETCHCrossSection.hh"
 #include "COMETAnalysis.hh"
+#include "COMETRandomSvc.hh"
 
 #include "G4LorentzConvertor.hh"
 
@@ -26,8 +27,7 @@ COMETAPProduction::COMETAPProduction( const G4String& name, G4ProcessType aType)
     FermiMomentum = new TF1("fermi_momentum","(x<[1])*[0]+(x>[1])*[3]*pow([4]/[3],(x-[1])/([2]-[1]))",0.,1.);
     FermiMomentum->SetParameters(1,0.24,0.8,2e-2,4.5e-4);
 
-    random = new TRandom();
-    random->SetSeed(clock());
+    random = COMETRandomSvc::GetRandomSvc()->GetRandomROOT();
 
     ifstream MDCS;
 
@@ -106,7 +106,7 @@ G4double COMETAPProduction::GetMeanFreePath(const G4Track& track, G4double, G4Fo
     G4LorentzVector beam_G4 = DynamicParticle->Get4Momentum();
     TLorentzVector beam(beam_G4.px()/GeV, beam_G4.py()/GeV, beam_G4.pz()/GeV, beam_G4.e()/GeV);
 
-    Double_t TargetMomentum = FermiMomentum->GetRandom(0.,1.);
+    Double_t TargetMomentum = FermiMomentum->GetRandom(0.,1.,random, nullptr);
     //Double_t TargetMomentum = 0.;
 
     Double_t x,y,z;
@@ -129,7 +129,7 @@ G4double COMETAPProduction::GetMeanFreePath(const G4Track& track, G4double, G4Fo
     G4double MicroCrossSection;
     G4double multi = fParameters->multi;
     MicroCrossSection = multi*fCHCrossSection->GetMicroCrossSection(fSqrt_S);
-    //G4cout<<"MicroCrossSection: "<<MicroCrossSection<<G4endl;
+    G4cout<<"MicroCrossSection: "<<MicroCrossSection<<G4endl;
 
     G4Material* mat = track.GetMaterial();
     G4double NofProton = (mat->GetDensity()/(g/cm3))*Avogadro*(mat->GetZ()/(mat->GetA()/(g/mole)));

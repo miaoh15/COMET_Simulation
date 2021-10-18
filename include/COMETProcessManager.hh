@@ -30,6 +30,7 @@ class COMETProcessManager{
     void SteppingAction(const G4Step* );
 
     inline int GetTag() const;
+    inline void SetTag(double _tag);
 
     private:
     COMETHistoManager* fHistoManager;
@@ -37,7 +38,9 @@ class COMETProcessManager{
     COMETParameters* fParameters;
     COMETSteppingAction* fSteppingAction;
 
-    int tag;
+    // FIXME
+    //int tag;
+    bool tag;
     // -1 other process of proton
     // 0 proton go through the target
     // 1 anti-proton production
@@ -45,6 +48,10 @@ class COMETProcessManager{
 
 inline int COMETProcessManager::GetTag() const {
     return tag;
+}
+
+inline void COMETProcessManager::SetTag(double _tag){
+    tag = _tag;
 }
 
 #endif

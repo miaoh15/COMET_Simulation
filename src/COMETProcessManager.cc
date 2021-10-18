@@ -27,11 +27,12 @@ void COMETProcessManager::EndOfRunAction(){
 void COMETProcessManager::BeginOfEventAction(const G4Event* event){
     if(event->GetEventID()%1000000 == 0) G4cout<<"Processing event "<< event->GetEventID() <<"..."<<G4endl;
     fHistoManager->ClearVector();
-    tag = -1;
+    SetTag(-1);
 }
 
 void COMETProcessManager::EndOfEventAction(){
-    if(!(tag==1)) return;
+    if(!(GetTag()==1)) return;
+    if(!(fParameters->cut_in_lab && fHistoManager->IsBackward()==true)) return;
     fHistoManager->Fill();
 }
 
@@ -48,16 +49,13 @@ void COMETProcessManager::SteppingAction(const G4Step* step){
 
     G4Track* track = step->GetTrack();
 
-    if(fParameters->kill_secondary == true){
-
-        if(step->GetPreStepPoint()->GetPhysicalVolume()->GetName()=="target"&&step->GetPostStepPoint()->GetPhysicalVolume()->GetName()=="World"){
-            if(track->GetTrackID()==1){
-                tag = 0; // Primary particle crosses target without anti-proton created.
-                track->SetTrackStatus(fStopAndKill);
-            }
-            if(track->GetDefinition()->GetPDGEncoding()==-2212&&track->GetParentID()==1){
-                tag = 1; // Anti-proton has been created.
-            }
+    if(step->GetPreStepPoint()->GetPhysicalVolume()->GetName()=="target"&&step->GetPostStepPoint()->GetPhysicalVolume()->GetName()=="World"){
+        if(track->GetTrackID()==1){
+            SetTag(0); // Primary particle crosses target without anti-proton created.
+            if(fParameters->kill_secondary == true) track->SetTrackStatus(fStopAndKill);
+        }
+        if(track->GetDefinition()->GetPDGEncoding()==-2212&&track->GetParentID()==1){
+            SetTag(1); // Anti-proton has been created.
         }
     }
 
