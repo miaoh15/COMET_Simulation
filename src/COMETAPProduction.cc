@@ -129,7 +129,7 @@ G4double COMETAPProduction::GetMeanFreePath(const G4Track& track, G4double, G4Fo
     G4double MicroCrossSection;
     G4double multi = fParameters->multi;
     MicroCrossSection = multi*fCHCrossSection->GetMicroCrossSection(fSqrt_S);
-    G4cout<<"MicroCrossSection: "<<MicroCrossSection<<G4endl;
+    //G4cout<<"MicroCrossSection: "<<MicroCrossSection<<G4endl;
 
     G4Material* mat = track.GetMaterial();
     G4double NofProton = (mat->GetDensity()/(g/cm3))*Avogadro*(mat->GetZ()/(mat->GetA()/(g/mole)));
@@ -192,7 +192,7 @@ void COMETAPProduction::GetDatas(const G4Step* aStep){
 }
 
 G4double COMETAPProduction::GetMaxDCS(G4double sqrt_S_now){
-    if(sqrt_S_now<4.8325) return 0.;
+    if(sqrt_S_now<3.7525) return 0.;
 
     G4double upper_limit = 0., lower_limit = 0., upper_MCS = 0., lower_MCS = 0.;
     G4double MicroCrossSection = 0.;

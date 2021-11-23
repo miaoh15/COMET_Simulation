@@ -22,12 +22,12 @@ COMETParameters::COMETParameters(){
     target_material = "Be";
 
     // for cut in laboratory coordinate
-    cut_in_lab = true; // Only collect particles fly in a certain range of direction.
+    cut_in_lab = false; // Only collect particles fly in a certain range of direction.
     lower_bound = 90.;
     upper_bound = 180.;
 
     // for restrict phase space
-    restrict_phase_space = true; // Restrict the phase space P [1.4, inf] theta [2.6, pi].
+    restrict_phase_space = false; // Restrict the phase space P [1.4, inf] theta [2.6, pi].
     p_min = 1.4;
     theta_min = 2.6;
 

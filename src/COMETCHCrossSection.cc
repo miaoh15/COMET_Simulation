@@ -31,7 +31,7 @@ COMETCHCrossSection::~COMETCHCrossSection(){}
 
 G4double COMETCHCrossSection::GetMicroCrossSection(G4double sqrt_S_now){
 
-    if(sqrt_S_now<=4.8325) return 1e-40;
+    if(sqrt_S_now<=3.7525) return 1e-40;
 
     G4double upper_limit = 0., lower_limit = 0., upper_MCS = 0., lower_MCS = 0.;
     G4double MicroCrossSection = 0.;
