@@ -11,7 +11,7 @@ COMETParameters::COMETParameters(){
     fParameters = this;
 
     // for detector construction
-    target_length = 150*CLHEP::um;
+    target_length = 100*CLHEP::um;
     target_radius = 2*CLHEP::cm;
     world_length = 4*CLHEP::m;
     world_radius = 4*CLHEP::m;
@@ -32,7 +32,7 @@ COMETParameters::COMETParameters(){
     theta_min = 2.6;
 
     // for multiply cross section
-    multi = 1e15;
+    multi = 1e7;
 
     // for generator
     particle = "proton";
@@ -47,6 +47,7 @@ COMETParameters::COMETParameters(){
     kill_secondary = true; // To kill secondary particles and primary particles, only anti-proton will be reserved and be killed after being detected.
     collect_only_AP = true; // Only information of an-riprotons will be write in ROOT file.
     only_target_AP = true; // Only anti-protons created within target will be reserved, in other word, AP created in detector will be killed.
+    fill_only_AP = false; // Only events where anti-protons are created will be filled.
 
     // for cross section data
     char current_path[255];

@@ -44,6 +44,7 @@ class COMETParameters{
     bool kill_secondary;
     bool collect_only_AP;
     bool only_target_AP;
+    bool fill_only_AP;
 
     // for generator
     G4String particle;

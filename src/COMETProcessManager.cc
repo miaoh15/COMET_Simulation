@@ -31,8 +31,8 @@ void COMETProcessManager::BeginOfEventAction(const G4Event* event){
 }
 
 void COMETProcessManager::EndOfEventAction(){
-    if(!(GetTag()==1)) return;
-    if(!(fParameters->cut_in_lab && fHistoManager->IsBackward()==true)) return;
+    if(fParameters->fill_only_AP && (!(GetTag()==1))) return;
+    if(fParameters->cut_in_lab && (!(fHistoManager->IsBackward()==true))) return;
     fHistoManager->Fill();
 }
 
