@@ -37,7 +37,7 @@ COMETParameters::COMETParameters(){
     // for generator
     particle = "proton";
     Nparticle = 1;
-    energy = 10.*GeV; // GeV
+    energy = 10.14*GeV; // GeV
     PDirection = G4ThreeVector(0.,0.,1.);
     Position = G4ThreeVector(0.,0.,-2.*m);
     Smearing = false;
@@ -47,7 +47,7 @@ COMETParameters::COMETParameters(){
     kill_secondary = true; // To kill secondary particles and primary particles, only anti-proton will be reserved and be killed after being detected.
     collect_only_AP = true; // Only information of an-riprotons will be write in ROOT file.
     only_target_AP = true; // Only anti-protons created within target will be reserved, in other word, AP created in detector will be killed.
-    fill_only_AP = false; // Only events where anti-protons are created will be filled.
+    fill_only_AP = true; // Only events where anti-protons are created will be filled.
 
     // for cross section data
     char current_path[255];
@@ -61,7 +61,7 @@ COMETParameters::COMETParameters(){
     APPMaxDCS_RPS = path+"data/APPMaxDCS_RPS.txt";
 
     // for output file
-    //outputName = "/media/miaomiao/data/Analysis/COMET-alpha-analysis/results/output_test.root";
+    //outputName = "/media/miaomiao/data/Analysis/COMET-alpha-analysis/results/output_Boyarinov/output3.root";
     outputName = "output.root";
 }
 
