@@ -192,7 +192,24 @@ void COMETAPProduction::GetDatas(const G4Step* aStep){
 }
 
 G4double COMETAPProduction::GetMaxDCS(G4double sqrt_S_now){
+
     if(sqrt_S_now<3.7525) return 0.;
+
+    double upper_limit = 0., lower_limit = 0., upper_MCS = 0., lower_MCS = 0.;
+    double MicroCrossSection = 0.;
+
+    int index = (int)floor((sqrt_S_now-3.7005)/0.001);
+    if(index>=49999 || index<0) {
+        cout<<"Fatal Error: sqrt_S out of range !!!"<<endl;
+        return 0.;
+    }
+
+    upper_limit = sqrt_S.at(index+1);
+    lower_limit = sqrt_S.at(index);
+    upper_MCS = MaxDCSStore.at(index+1);
+    lower_MCS = MaxDCSStore.at(index);
+
+/*    if(sqrt_S_now<3.7525) return 0.;
 
     G4double upper_limit = 0., lower_limit = 0., upper_MCS = 0., lower_MCS = 0.;
     G4double MicroCrossSection = 0.;
@@ -207,11 +224,12 @@ G4double COMETAPProduction::GetMaxDCS(G4double sqrt_S_now){
 
             break;
         }
-    }
+    }*/
 
     MicroCrossSection = exp(log(lower_MCS)+(log(upper_MCS)-log(lower_MCS))*((sqrt_S_now-lower_limit)/(upper_limit-lower_limit)));
 
     return MicroCrossSection;
+
 }
 
 G4double COMETAPProduction::ComputeDCS(G4double p, G4double Theta, G4double Ecms){

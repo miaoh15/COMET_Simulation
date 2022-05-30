@@ -50,8 +50,8 @@ int main(int argc,char** argv)
 
   // Physics list
   G4VModularPhysicsList* physicsList = new QGSP_BERT_HP;
-  COMETPhysicsConstructor* fConstructor = new COMETPhysicsConstructor();
-  physicsList->RegisterPhysics(fConstructor);
+  //COMETPhysicsConstructor* fConstructor = new COMETPhysicsConstructor();
+  //physicsList->RegisterPhysics(fConstructor);
   //physicsList->SetVerboseLevel(0);
   runManager->SetUserInitialization(physicsList);
     

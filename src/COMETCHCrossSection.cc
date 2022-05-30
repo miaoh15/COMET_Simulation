@@ -36,7 +36,7 @@ G4double COMETCHCrossSection::GetMicroCrossSection(G4double sqrt_S_now){
     G4double upper_limit = 0., lower_limit = 0., upper_MCS = 0., lower_MCS = 0.;
     G4double MicroCrossSection = 0.;
 
-    for(long unsigned int i=0; i<sqrt_S.size(); i++){
+    /*for(long unsigned int i=0; i<sqrt_S.size(); i++){
         lower_limit = sqrt_S.at(i);
         upper_limit = sqrt_S.at(i+1);
         if(!(lower_limit<sqrt_S_now && upper_limit>sqrt_S_now)) continue;
@@ -48,7 +48,18 @@ G4double COMETCHCrossSection::GetMicroCrossSection(G4double sqrt_S_now){
         }
     }
 
-    if(lower_MCS == 0 && upper_MCS == 0) return 1e-40;
+    if(lower_MCS == 0 && upper_MCS == 0) return 1e-40;*/
+
+    int index = (int)floor((sqrt_S_now-3.7005)/0.001);
+    if(index>=49999 || index<0) {
+        cout<<"Fatal Error: sqrt_S out of range !!!"<<endl;
+        return 0.;
+    }
+
+    upper_limit = sqrt_S.at(index+1);
+    lower_limit = sqrt_S.at(index);
+    upper_MCS = CrossSectionStore.at(index+1);
+    lower_MCS = CrossSectionStore.at(index);
 
     MicroCrossSection = exp(log(lower_MCS)+(log(upper_MCS)-log(lower_MCS))*((sqrt_S_now-lower_limit)/(upper_limit-lower_limit)));
 

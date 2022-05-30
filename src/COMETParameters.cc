@@ -11,15 +11,15 @@ COMETParameters::COMETParameters(){
     fParameters = this;
 
     // for detector construction
-    target_length = 100*CLHEP::um;
-    target_radius = 2*CLHEP::cm;
+    target_length = 70*CLHEP::cm;
+    target_radius = 0.13*CLHEP::cm;
     world_length = 4*CLHEP::m;
     world_radius = 4*CLHEP::m;
     detector_radius = 1*CLHEP::m;
     detector_thickness = 0.01*CLHEP::m;
     detector_theta_down = 0.;
     detector_theta_up = 179.5;
-    target_material = "Be";
+    target_material = "GRAPHITE";
 
     // for cut in laboratory coordinate
     cut_in_lab = false; // Only collect particles fly in a certain range of direction.
@@ -32,12 +32,12 @@ COMETParameters::COMETParameters(){
     theta_min = 2.6;
 
     // for multiply cross section
-    multi = 1e7;
+    multi = 1.;
 
     // for generator
     particle = "proton";
     Nparticle = 1;
-    energy = 10.14*GeV; // GeV
+    energy = 90.*GeV; // GeV
     PDirection = G4ThreeVector(0.,0.,1.);
     Position = G4ThreeVector(0.,0.,-2.*m);
     Smearing = false;
@@ -62,7 +62,7 @@ COMETParameters::COMETParameters(){
 
     // for output file
     //outputName = "/media/miaomiao/data/Analysis/COMET-alpha-analysis/results/output_Boyarinov/output3.root";
-    outputName = "output.root";
+    outputName = "output_1e7_90GeV.root";
 }
 
 COMETParameters::~COMETParameters(){
